@@ -1,2 +1,4 @@
-package com.wellsfargo.bankapp.controller;public class AccountController {
+package com.wellsfargo.bankapp.controller;
+
+public class AccountController {
 }

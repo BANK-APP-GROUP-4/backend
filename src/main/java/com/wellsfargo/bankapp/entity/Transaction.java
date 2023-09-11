@@ -18,14 +18,14 @@ public class Transaction {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int transactionId;
-	@Column
+	@Column(name="amount")
 	private int amount;
-	@Column
+	@Column(name="date_of_transaction")
 	private LocalDate date;
-	@Column
-	private String reciever_acc;
-	@ManyToOne(targetEntity=Account.class,cascade=CascadeType.ALL)
-	@JoinColumn(name="accountNo")
+	@Column(name="receiver_acc")
+	private String receiver_acc;
+	@ManyToOne(targetEntity=SavingsAccount.class, cascade=CascadeType.ALL)
+	@JoinColumn(name="account_detail")
 	private List<Account> accountDetail;
 
 	
