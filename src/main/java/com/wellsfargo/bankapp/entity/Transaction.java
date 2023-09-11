@@ -1,4 +1,4 @@
-package com.wellsfargo.bankapp.Records;
+package com.wellsfargo.bankapp.entity;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -8,15 +8,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.time.LocalDate;
 import java.util.List;
 
 @Entity
-@Table
-public class TransactionInfoRecord {
-	
+@Table(name="transactions")
+public class Transaction {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int tid;
@@ -26,11 +24,13 @@ public class TransactionInfoRecord {
 	private LocalDate date;
 	@Column
 	private String reciever_acc;
-	@ManyToOne(targetEntity=AccountDetails.class,cascade=CascadeType.ALL)
+	@ManyToOne(targetEntity=Account.class,cascade=CascadeType.ALL)
 	@JoinColumn(name="account_transaction",referencedColumnName= "aid")
-	private List<AccountDetails> accountdetail;
+	private List<Account> accountdetail;
 
-	public TransactionInfoRecord(int amount, LocalDate date, String reciever_acc) {
+	public Transaction(){}
+
+	public Transaction(int amount, LocalDate date, String reciever_acc) {
 		super();
 		this.amount = amount;
 		this.date = date;
