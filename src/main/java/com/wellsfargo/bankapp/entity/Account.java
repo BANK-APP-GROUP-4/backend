@@ -1,17 +1,32 @@
 package com.wellsfargo.bankapp.entity;
 
-package com.wellsfargo.bankapp.Records;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.time.LocalDate;
+import java.util.List;
 @Entity
-@Table
+@Table(name="Account")
 public class Account {
     @Id
-    @Column
-    private String accountno;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long aid;
+    
+    private String accountNumber;
+    
+    @ManyToOne
+    @JoinColumn(name = "id")
+    private Customer customer;
+   
+    
     @Column
     private String accounttype;
     @Column
@@ -24,8 +39,12 @@ public class Account {
     private LocalDate activationdate;
     @Column
     private LocalDate deactivationdate;
-    public AccountsInfoRecord(String accountno, String accounttype, int balance, String userid, String branch, LocalDate activationdate, LocalDate deactivationdate) {
-        this.accountno = accountno;
+    
+    
+	
+	
+    public Account(String accountNumber, String accounttype, int balance, String userid, String branch, LocalDate activationdate, LocalDate deactivationdate) {
+        this.accountNumber = accountNumber;
         this.accounttype = accounttype;
         this.balance = balance;
         this.userid = userid;
@@ -33,13 +52,18 @@ public class Account {
         this.activationdate = activationdate;
         this.deactivationdate = deactivationdate;
     }
-    public AccountsInfoRecord() {
+    
+    public Long getAId() {
+        return aid;
     }
-    public String getAccountno() {
-        return accountno;
+    public void setAId(Long aid) {
+        this.aid = aid;
     }
-    public void setAccountno(String accountno) {
-        this.accountno = accountno;
+    public String getAccountNumber() {
+        return accountNumber;
+    }
+    public void setAccountNumber(String accountNumber) {
+        this.accountNumber = accountNumber;
     }
     public String getAccounttype() {
         return accounttype;
@@ -77,17 +101,8 @@ public class Account {
     public void setDeactivationdate(LocalDate deactivationdate) {
         this.deactivationdate = deactivationdate;
     }
-    @Override
-    public String toString() {
-        return "AccountsInfoRecord{" +
-                "accountno='" + accountno + '\'' +
-                ", accounttype='" + accounttype + '\'' +
-                ", balance=" + balance +
-                ", userid='" + userid + '\'' +
-                ", branch='" + branch + '\'' +
-                ", activationdate=" + activationdate +
-                ", deactivationdate=" + deactivationdate +
-                '}';
-    }
+    @OneToMany(mappedBy = "account")
+    private List<Transaction> transactions;
+    
 }
 
