@@ -1,9 +1,15 @@
 package com.wellsfargo.bankapp.entity;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -13,95 +19,106 @@ public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column
     private String firstName;
+    @Column
     private String lastName;
+    @Column
     private String address;
+    @Column
     private String password;
+    @Column
     private String email;
+    @Column
     private int age;
+    @Column
     private String gender;
+    @Column
     private String phoneNumber;
-
-    public Customer(String firstName, String lastName, String address, String password, String email, int age, String gender, String phoneNumber) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.address = address;
-        this.password = password;
-        this.email = email;
-        this.age = age;
-        this.gender = gender;
-        this.phoneNumber = phoneNumber;
-    }
-
-
+    
     public Long getId() {
-        return id;
-    }
+		return id;
+	}
 
-    public String getFirstName() {
-        return firstName;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
+	public String getFirstName() {
+		return firstName;
+	}
 
-    public String getLastName() {
-        return lastName;
-    }
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
+	public String getLastName() {
+		return lastName;
+	}
 
-    public String getAddress() {
-        return address;
-    }
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
+	public String getAddress() {
+		return address;
+	}
 
-    public String getPassword() {
-        return password;
-    }
+	public void setAddress(String address) {
+		this.address = address;
+	}
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+	public String getPassword() {
+		return password;
+	}
 
-    public String getEmail() {
-        return email;
-    }
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+	public String getEmail() {
+		return email;
+	}
 
-    public int getAge() {
-        return age;
-    }
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
-    public void setAge(int age) {
-        this.age = age;
-    }
+	public int getAge() {
+		return age;
+	}
 
-    public String getGender() {
-        return gender;
-    }
+	public void setAge(int age) {
+		this.age = age;
+	}
 
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
+	public String getGender() {
+		return gender;
+	}
 
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
+	public List<Account> getAccounts() {
+		return accounts;
+	}
+
+	public void setAccounts(List<Account> accounts) {
+		this.accounts = accounts;
+	}
+
+	@OneToMany(mappedBy="user",fetch=FetchType.EAGER,cascade=CascadeType.ALL)
+    private List<Account> accounts;
+
 }
-
 
 
