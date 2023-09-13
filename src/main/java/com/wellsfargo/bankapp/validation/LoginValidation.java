@@ -21,7 +21,7 @@ public class LoginValidation {
 
 	public Customer validateLogin(Login user) {
 		Customer cus = null;
-		Optional<Customer> customer = customerRepo.findCustomerByfname(user.getUsername());
+		Optional<Customer> customer = customerRepo.findById(user.getUsername());
 		if(customer.isPresent()) {
 			cus = customer.get();
 
