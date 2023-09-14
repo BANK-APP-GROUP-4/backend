@@ -5,8 +5,6 @@ import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDate;
 
-@Getter
-@Setter
 @MappedSuperclass
 public abstract class Account {
     @Id
@@ -20,6 +18,26 @@ public abstract class Account {
 
     public Account(LocalDate activationDate, Customer customer) {
         this.activationDate = activationDate;
+        this.customer = customer;
+    }
+
+    public Long getId() {
+        return Id;
+    }
+
+    public LocalDate getActivationDate() {
+        return activationDate;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setActivationDate(LocalDate activationDate) {
+        this.activationDate = activationDate;
+    }
+
+    public void setCustomer(Customer customer) {
         this.customer = customer;
     }
 }

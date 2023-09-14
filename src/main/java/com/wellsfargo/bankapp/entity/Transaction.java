@@ -1,33 +1,62 @@
 package com.wellsfargo.bankapp.entity;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.List;
 
 @Entity
 @Table(name="transactions")
 public class Transaction {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int transactionId;
+	private int Id;
 	@Column(name="amount")
-	private int amount;
+	private Long amount;
 	@Column(name="date_of_transaction")
-	private LocalDate date;
-	@Column(name="receiver_acc")
-	private String receiver_acc;
-	@ManyToOne(targetEntity=SavingsAccount.class, cascade=CascadeType.ALL)
-	@JoinColumn(name="account_detail")
-	private List<Account> accountDetail;
+	private LocalDate dateOfTransaction;
+	@ManyToOne
+	@JoinColumn(name="sender_account_id")
+	private SavingsAccount senderAcc;
 
-	
-	
+	@ManyToOne
+	@JoinColumn(name="receiver_account_id")
+	private SavingsAccount receiverAcc;
+
+	public Transaction(Long amount, LocalDate dateOfTransaction, SavingsAccount senderAcc, SavingsAccount receiverAcc) {
+		this.amount = amount;
+		this.dateOfTransaction = dateOfTransaction;
+		this.senderAcc = senderAcc;
+		this.receiverAcc = receiverAcc;
+	}
+
+	public Long getAmount() {
+		return amount;
+	}
+
+	public SavingsAccount getSenderAcc() {
+		return senderAcc;
+	}
+
+	public SavingsAccount getReceiverAcc() {
+		return receiverAcc;
+	}
+
+	public void setAmount(Long amount) {
+		this.amount = amount;
+	}
+
+	public void setSenderAcc(SavingsAccount senderAcc) {
+		this.senderAcc = senderAcc;
+	}
+
+	public void setReceiverAcc(SavingsAccount receiverAcc) {
+		this.receiverAcc = receiverAcc;
+	}
+
+	public LocalDate getDateOfTransaction() {
+		return dateOfTransaction;
+	}
+
+	public void setDateOfTransaction(LocalDate dateOfTransaction) {
+		this.dateOfTransaction = dateOfTransaction;
+	}
 }

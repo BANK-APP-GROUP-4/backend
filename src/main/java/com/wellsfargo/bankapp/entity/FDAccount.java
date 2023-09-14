@@ -7,9 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.time.LocalDate;
 
-@Getter
-@Setter
-@ToString
+
 @Entity
 @Table(name="fd_account")
 public class FDAccount extends Account{
@@ -22,10 +20,29 @@ public class FDAccount extends Account{
     @Column(name="maturity_period")
     private int maturityPeriod;
 
+    public FDAccount(LocalDate activationDate, Customer customer) {
+        super(activationDate, customer);
+    }
+
     public FDAccount(LocalDate activationDate, Customer customer, Long principalAmount, int maturityPeriod) {
         super(activationDate, customer);
         this.principalAmount = principalAmount;
         this.maturityPeriod = maturityPeriod;
     }
 
+    public Long getPrincipalAmount() {
+        return principalAmount;
+    }
+
+    public int getMaturityPeriod() {
+        return maturityPeriod;
+    }
+
+    public void setPrincipalAmount(Long principalAmount) {
+        this.principalAmount = principalAmount;
+    }
+
+    public void setMaturityPeriod(int maturityPeriod) {
+        this.maturityPeriod = maturityPeriod;
+    }
 }

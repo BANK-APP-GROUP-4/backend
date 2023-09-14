@@ -16,7 +16,7 @@ public class CustomerController {
     @Autowired
     private CustomerService customerService;
     
-    @CrossOrigin(origins = "http://localhost:3001")
+    @CrossOrigin(origins="http://localhost:3001")
     @PostMapping("/add")
     void addCustomer(@RequestBody Customer customer){
         customerService.addCustomer(customer);

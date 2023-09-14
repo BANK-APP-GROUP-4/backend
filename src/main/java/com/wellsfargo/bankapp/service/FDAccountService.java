@@ -5,6 +5,8 @@ import com.wellsfargo.bankapp.repository.FDAccountRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class FDAccountService {
     @Autowired
@@ -16,5 +18,9 @@ public class FDAccountService {
 
     void addFDAccount(FDAccount fdAccount){
         fdAccountRepo.save(fdAccount);
+    }
+
+    public List<FDAccount> findAllFdAccount(Long id){
+        return fdAccountRepo.findAll();
     }
 }
