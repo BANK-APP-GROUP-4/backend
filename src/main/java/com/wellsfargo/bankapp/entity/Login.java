@@ -2,17 +2,17 @@ package com.wellsfargo.bankapp.entity;
 
 public class Login {
 
-	private String username;
+	private Long username;
 	private String password;
-	public Login(String username, String password) {
+	public Login(Long username, String password) {
 		super();
 		this.username = username;
 		this.password = password;
 	}
-	public String getUsername() {
+	public Long getUsername() {
 		return username;
 	}
-	public void setUsername(String username) {
+	public void setUsername(Long username) {
 		this.username = username;
 	}
 	public String getPassword() {
