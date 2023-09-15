@@ -22,5 +22,18 @@ public abstract class Account {
         this.activationDate = activationDate;
         this.customer = customer;
     }
+    public Account() {}
+	public Long getId() {
+		return Id;
+	}
+	public void setId(Long id) {
+		Id = id;
+	}
+	public LocalDate getActivationDate() {
+		return activationDate;
+	}
+	public void setActivationDate(LocalDate activationDate) {
+		this.activationDate = activationDate;
+	}
 }
 
