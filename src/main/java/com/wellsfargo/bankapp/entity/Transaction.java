@@ -1,5 +1,7 @@
 package com.wellsfargo.bankapp.entity;
 
+import com.wellsfargo.bankapp.entity.account.SavingsAccount;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 
@@ -10,9 +12,12 @@ public class Transaction {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int Id;
 	@Column(name="amount")
-	private Long amount;
+	private double amount;
 	@Column(name="date_of_transaction")
 	private LocalDate dateOfTransaction;
+
+	@Column(name="transaction_status")
+	private String status;
 	@ManyToOne
 	@JoinColumn(name="sender_account_id")
 	private SavingsAccount senderAcc;
@@ -21,14 +26,17 @@ public class Transaction {
 	@JoinColumn(name="receiver_account_id")
 	private SavingsAccount receiverAcc;
 
-	public Transaction(Long amount, LocalDate dateOfTransaction, SavingsAccount senderAcc, SavingsAccount receiverAcc) {
-		this.amount = amount;
-		this.dateOfTransaction = dateOfTransaction;
+	public Transaction() {}
+
+	public Transaction(SavingsAccount senderAcc, SavingsAccount receiverAcc, double amount, LocalDate dateOfTransaction, String status) {
 		this.senderAcc = senderAcc;
 		this.receiverAcc = receiverAcc;
+		this.amount = amount;
+		this.dateOfTransaction = dateOfTransaction;
+		this.status = status;
 	}
 
-	public Long getAmount() {
+	public double getAmount()  {
 		return amount;
 	}
 
@@ -58,5 +66,13 @@ public class Transaction {
 
 	public void setDateOfTransaction(LocalDate dateOfTransaction) {
 		this.dateOfTransaction = dateOfTransaction;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 }

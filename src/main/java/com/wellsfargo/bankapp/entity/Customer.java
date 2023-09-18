@@ -1,5 +1,8 @@
 package com.wellsfargo.bankapp.entity;
 
+import com.wellsfargo.bankapp.entity.account.FDAccount;
+import com.wellsfargo.bankapp.entity.account.SavingsAccount;
+
 import java.time.LocalDate;
 import java.util.List;
 

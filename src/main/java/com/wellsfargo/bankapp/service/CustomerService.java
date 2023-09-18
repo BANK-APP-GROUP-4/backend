@@ -1,11 +1,8 @@
 package com.wellsfargo.bankapp.service;
 
-import com.wellsfargo.bankapp.entity.Account;
 import com.wellsfargo.bankapp.entity.Customer;
-import com.wellsfargo.bankapp.entity.SavingsAccount;
+import com.wellsfargo.bankapp.entity.account.SavingsAccount;
 import com.wellsfargo.bankapp.repository.CustomerRepo;
-import com.wellsfargo.bankapp.repository.FDAccountRepo;
-import com.wellsfargo.bankapp.repository.SavingsAccountRepo;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,10 +14,6 @@ import java.util.Optional;
 public class CustomerService {
     @Autowired
     private CustomerRepo customerRepo;
-    @Autowired
-    private SavingsAccountService savingsAccountService;
-    @Autowired
-    private FDAccountService fdAccountService;
 
     public void addCustomer(Customer customer){
         // checking whether the email or mobile number is already taken.
@@ -34,9 +27,9 @@ public class CustomerService {
         }
         // saving the customer
         customerRepo.save(customer);
-        // creating a saving account for the customer.
-        savingsAccountService.addSavingsAccount(
-                new SavingsAccount(customer.getDateBecameCustomer(), customer, 5000L)
-        );
+    }
+
+    public Optional<Customer> findCustomerById(Long Id){
+        return customerRepo.findById(Id);
     }
 }

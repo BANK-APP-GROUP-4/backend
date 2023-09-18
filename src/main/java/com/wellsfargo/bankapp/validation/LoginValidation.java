@@ -5,12 +5,9 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.wellsfargo.bankapp.entity.Account;
 import com.wellsfargo.bankapp.entity.Customer;
 import com.wellsfargo.bankapp.entity.Login;
-import com.wellsfargo.bankapp.entity.SavingsAccount;
 import com.wellsfargo.bankapp.repository.CustomerRepo;
-import com.wellsfargo.bankapp.repository.SavingsAccountRepo;
 
 @Service
 public class LoginValidation {

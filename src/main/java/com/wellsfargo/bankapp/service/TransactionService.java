@@ -1,6 +1,6 @@
 package com.wellsfargo.bankapp.service;
 
-import com.wellsfargo.bankapp.entity.SavingsAccount;
+import com.wellsfargo.bankapp.entity.account.SavingsAccount;
 import com.wellsfargo.bankapp.entity.Transaction;
 import com.wellsfargo.bankapp.repository.TransactionRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,32 +21,39 @@ public class TransactionService {
         this.transactionRepo = transactionRepo;
     }
 
-    public void addTransaction(Long senderAccNumber, Long receiverAccNumber, Long amount){
-        Optional<SavingsAccount> senderAccOp = savingsAccountService.findSavingsAccountById(senderAccNumber);
-        Optional<SavingsAccount> receiverAccOp = savingsAccountService.findSavingsAccountById(receiverAccNumber);
+    public void addTransaction(Long senderAccId, Long receiverAccId, double amount) throws Exception {
+        Optional<SavingsAccount> senderAccOp = savingsAccountService.findSavingsAccountById(senderAccId);
+        Optional<SavingsAccount> receiverAccOp = savingsAccountService.findSavingsAccountById(receiverAccId);
         if(receiverAccOp.isPresent()){
             SavingsAccount senderAcc =  senderAccOp.get();
             SavingsAccount receiverAcc =  receiverAccOp.get();
-            Long balance = senderAcc.getBalance();
+            double balance = senderAcc.getBalance();
+            String status;
+
             if(balance - amount >= SavingsAccount.minBalance){
                 senderAcc.setBalance(balance-amount);
                 receiverAcc.setBalance(receiverAcc.getBalance()+amount);
-                transactionRepo.save(
-                        new Transaction(
-                                amount,
-                                LocalDate.now(),
-                                senderAcc,
-                                receiverAcc
-                        )
-                );
-                System.out.println("Transaction Successful.");
+                status = "VALID";
+
             }
             else{
-                System.out.println("Not enough balance.");
+
+                status = "INVALID";
+                throw new Exception("Balance not enough.");
             }
+
+            transactionRepo.save(
+                    new Transaction(
+                            senderAcc,
+                            receiverAcc,
+                            amount,
+                            LocalDate.now(),
+                            status
+                    )
+            );
         }
         else {
-            System.out.println("User not found.");
+            throw new Exception("User not found.");
         }
     }
 }
