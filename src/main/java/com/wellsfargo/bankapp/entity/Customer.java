@@ -4,6 +4,7 @@ import com.wellsfargo.bankapp.entity.account.FDAccount;
 import com.wellsfargo.bankapp.entity.account.SavingsAccount;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.persistence. *;
@@ -23,12 +24,11 @@ public class Customer {
 
     @Column(name="address")
     private String address;
+    @Column(name="email")
+    private String email;
 
     @Column(name="password")
     private String password;
-
-    @Column(name="email")
-    private String email;
 
     @Column(name="age")
     private int age;
@@ -40,7 +40,7 @@ public class Customer {
     private Long mobileNumber;
 
 	@Column(name="date_became_customer")
-	private LocalDate dateBecameCustomer;
+	private LocalDateTime dateBecameCustomer;
 
     @Column(name="savings_account")
     @OneToMany(mappedBy="customer")
@@ -50,8 +50,7 @@ public class Customer {
     @OneToMany(mappedBy="customer")
     private List<FDAccount> fdAccountList;
 
-    public Customer() {
-    }
+    public Customer() {}
 
     public Customer(
             String firstName,
@@ -62,7 +61,7 @@ public class Customer {
             int age,
             String gender,
             Long mobileNumber,
-            LocalDate dateBecameCustomer
+            LocalDateTime dateBecameCustomer
     ) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -111,7 +110,7 @@ public class Customer {
         return mobileNumber;
     }
 
-    public LocalDate getDateBecameCustomer() {
+    public LocalDateTime getDateBecameCustomer() {
         return dateBecameCustomer;
     }
 
@@ -147,7 +146,7 @@ public class Customer {
         this.mobileNumber = mobileNumber;
     }
 
-    public void setDateBecameCustomer(LocalDate dateBecameCustomer) {
+    public void setDateBecameCustomer(LocalDateTime dateBecameCustomer) {
         this.dateBecameCustomer = dateBecameCustomer;
     }
 

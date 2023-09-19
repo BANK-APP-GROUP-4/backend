@@ -4,7 +4,7 @@ import com.wellsfargo.bankapp.entity.Customer;
 import com.wellsfargo.bankapp.entity.Transaction;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -21,7 +21,7 @@ public class SavingsAccount {
     @JoinColumn(name="customer_id")
     private Customer customer;
     @Column(name="activation_date")
-    private LocalDate activationDate;
+    private LocalDateTime activationDate;
     @Column(name="balance")
     private double balance;
     @OneToMany(mappedBy="receiverAcc")
@@ -32,7 +32,7 @@ public class SavingsAccount {
 
     public SavingsAccount() {}
 
-    public SavingsAccount(Customer customer, LocalDate activationDate, double balance) {
+    public SavingsAccount(Customer customer, LocalDateTime activationDate, double balance) {
         this.customer = customer;
         this.activationDate = activationDate;
         this.balance = balance;
@@ -40,7 +40,7 @@ public class SavingsAccount {
 
     public SavingsAccount(
             Customer customer,
-            LocalDate activationDate,
+            LocalDateTime activationDate,
             double balance,
             List<Transaction> creditTransactions,
             List<Transaction> debitTransactions
@@ -60,11 +60,11 @@ public class SavingsAccount {
         Id = id;
     }
 
-    public LocalDate getActivationDate() {
+    public LocalDateTime getActivationDate() {
         return activationDate;
     }
 
-    public void setActivationDate(LocalDate activationDate) {
+    public void setActivationDate(LocalDateTime activationDate) {
         this.activationDate = activationDate;
     }
 

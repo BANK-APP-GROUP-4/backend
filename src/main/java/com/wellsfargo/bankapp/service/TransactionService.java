@@ -7,13 +7,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class TransactionService {
     @Autowired
     private TransactionRepo transactionRepo;
-
     @Autowired
     private SavingsAccountService savingsAccountService;
 
@@ -21,25 +23,25 @@ public class TransactionService {
         this.transactionRepo = transactionRepo;
     }
 
-    public void addTransaction(Long senderAccId, Long receiverAccId, double amount) throws Exception {
+    public String addTransaction(Long senderAccId, Long receiverAccId, double amount) throws Exception {
         Optional<SavingsAccount> senderAccOp = savingsAccountService.findSavingsAccountById(senderAccId);
         Optional<SavingsAccount> receiverAccOp = savingsAccountService.findSavingsAccountById(receiverAccId);
+        String status;
         if(receiverAccOp.isPresent()){
             SavingsAccount senderAcc =  senderAccOp.get();
             SavingsAccount receiverAcc =  receiverAccOp.get();
             double balance = senderAcc.getBalance();
-            String status;
 
             if(balance - amount >= SavingsAccount.minBalance){
+                // transaction successful
                 senderAcc.setBalance(balance-amount);
                 receiverAcc.setBalance(receiverAcc.getBalance()+amount);
                 status = "VALID";
 
             }
             else{
-
-                status = "INVALID";
-                throw new Exception("Balance not enough.");
+                // balance not enough
+                status = "NO BALANCE";
             }
 
             transactionRepo.save(
@@ -47,13 +49,19 @@ public class TransactionService {
                             senderAcc,
                             receiverAcc,
                             amount,
-                            LocalDate.now(),
+                            LocalDateTime.now(),
                             status
                     )
             );
         }
         else {
-            throw new Exception("User not found.");
+            status = "NO ACCOUNT";
         }
+        return status;
+    }
+
+    public List<Transaction> getLastKTransactions(Long id, int k) {
+        List<Transaction> history = transactionRepo.getLastKTransactions(id);
+        return history.stream().limit(k).collect(Collectors.toList());
     }
 }

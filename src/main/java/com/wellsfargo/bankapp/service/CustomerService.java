@@ -15,7 +15,7 @@ public class CustomerService {
     @Autowired
     private CustomerRepo customerRepo;
 
-    public void addCustomer(Customer customer){
+    public void registerCustomer(Customer customer){
         // checking whether the email or mobile number is already taken.
         Optional<Customer> customerByEmail = customerRepo.findCustomerByEmail(customer.getEmail());
         Optional<Customer> customerByMobileNumber = customerRepo.findCustomerByMobileNumber(customer.getMobileNumber());
@@ -29,7 +29,26 @@ public class CustomerService {
         customerRepo.save(customer);
     }
 
-    public Optional<Customer> findCustomerById(Long Id){
-        return customerRepo.findById(Id);
+    public Optional<Customer> findCustomerById(Long id){
+        return customerRepo.findById(id);
     }
+
+    public Boolean isCustomerPresent(Long id){
+        if(findCustomerById(id).isPresent()){
+            return true;
+        }
+        return false;
+    }
+
+    public Boolean validateCustomer(String email, String password) {
+        Optional<Customer> customerByEmailOp = customerRepo.findCustomerByEmail(email);
+        if(customerByEmailOp.isPresent()){
+            Customer customerByEmail = customerByEmailOp.get();
+            if(customerByEmail.getPassword().equals(password)){
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

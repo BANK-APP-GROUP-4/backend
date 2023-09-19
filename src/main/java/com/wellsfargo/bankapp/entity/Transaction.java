@@ -4,6 +4,7 @@ import com.wellsfargo.bankapp.entity.account.SavingsAccount;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name="transactions")
@@ -14,7 +15,7 @@ public class Transaction {
 	@Column(name="amount")
 	private double amount;
 	@Column(name="date_of_transaction")
-	private LocalDate dateOfTransaction;
+	private LocalDateTime dateOfTransaction;
 
 	@Column(name="transaction_status")
 	private String status;
@@ -28,7 +29,7 @@ public class Transaction {
 
 	public Transaction() {}
 
-	public Transaction(SavingsAccount senderAcc, SavingsAccount receiverAcc, double amount, LocalDate dateOfTransaction, String status) {
+	public Transaction(SavingsAccount senderAcc, SavingsAccount receiverAcc, double amount, LocalDateTime dateOfTransaction, String status) {
 		this.senderAcc = senderAcc;
 		this.receiverAcc = receiverAcc;
 		this.amount = amount;
@@ -60,11 +61,11 @@ public class Transaction {
 		this.receiverAcc = receiverAcc;
 	}
 
-	public LocalDate getDateOfTransaction() {
+	public LocalDateTime getDateOfTransaction() {
 		return dateOfTransaction;
 	}
 
-	public void setDateOfTransaction(LocalDate dateOfTransaction) {
+	public void setDateOfTransaction(LocalDateTime dateOfTransaction) {
 		this.dateOfTransaction = dateOfTransaction;
 	}
 

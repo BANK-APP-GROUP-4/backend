@@ -5,6 +5,7 @@ import com.wellsfargo.bankapp.entity.account.SavingsAccount;
 import com.wellsfargo.bankapp.repository.SavingsAccountRepo;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,22 +24,19 @@ public class SavingsAccountService {
         this.savingsAccountRepo = savingsAccountRepo;
     }
 
-    public void  createSavingsAccount(Long customerId, double depositAmount) throws Exception {
+    public int  createSavingsAccount(Long customerId, double depositAmount) throws Exception {
         Optional<Customer> customer = customerService.findCustomerById(customerId);
         if(!customer.isPresent()){
-            throw new Exception("Customer not present.");
+            // customer not present
+            return 0;
         }
         if(depositAmount >= SavingsAccount.minBalance){
-            savingsAccountRepo.save(
-                    new SavingsAccount(
-                            customer.get(),
-                            LocalDate.now(),
-                            depositAmount
-                    )
-            );
+            savingsAccountRepo.save(new SavingsAccount(customer.get(), LocalDateTime.now(), depositAmount));
+            return 1;
         }
         else{
-            throw new Exception("Deposit amount has to be more than minimum balance.");
+            // deposit amount has to be more than minimum balance
+            return 2;
         }
     }
     
@@ -63,7 +61,7 @@ public class SavingsAccountService {
     private boolean isEligibleForInterest(SavingsAccount savingsAccount) {
         // Add logic to determine if the account is eligible for interest calculation
         // For example, check if the activation date is before today
-        return savingsAccount.getActivationDate().isBefore(LocalDate.now());
+        return savingsAccount.getActivationDate().isBefore(LocalDateTime.now());
     }
 
     private double calculateInterest(SavingsAccount savingsAccount) {

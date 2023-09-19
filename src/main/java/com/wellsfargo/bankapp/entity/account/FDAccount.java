@@ -26,9 +26,7 @@ public class FDAccount {
     private double principalAmount;
     @Column(name="maturity_period")
     private int maturityPeriod;
-
     public FDAccount(){}
-
     public FDAccount(LocalDate activationDate, Customer customer, double principalAmount, int maturityPeriod) {
         this.activationDate = activationDate;
         this.customer = customer;
