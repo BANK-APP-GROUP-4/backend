@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -36,27 +37,24 @@ public class TransactionController {
         Long senderAccId = sendAmountRequestNode.get("senderAccId").asLong();
         Long receiverAccId = sendAmountRequestNode.get("receiverAccId").asLong();
         double amount = sendAmountRequestNode.get("amount").asDouble();
-        String status = transactionService.addTransaction(senderAccId, receiverAccId, amount);
-        if(status == "VALID"){
-            return ResponseEntity.status(HttpStatus.OK).body("Successful transaction.");
-        }
-        else if(status == "NO BALANCE"){
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Insufficient balance.");
-        }
-        else{
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Account not found.");
-        }
+        transactionService.addTransaction(senderAccId, receiverAccId, amount);
+        return ResponseEntity.status(HttpStatus.OK).body("Successful transaction.");
+    }
+
+    @ResponseBody
+    @GetMapping(path="/last/{k}/{id}")
+    public ResponseEntity<List<Transaction>> getLastKTransactionsOfCustomer(@PathVariable("id") Long id, @PathVariable("k") int k) {
+        List<Transaction> history = transactionService.getLastKTransactions(id, k);
+        return ResponseEntity.status(HttpStatus.OK).body(history);
 
     }
 
     @ResponseBody
-    @GetMapping(path="/history/{id}/{k}")
-    public ResponseEntity<List<Transaction>> getLastKTransactionsOfCustomer(@PathVariable("id") String id, @PathVariable("k") String k) {
-        if(customerService.isCustomerPresent(Long.valueOf(id))){
-            List<Transaction> history = transactionService.getLastKTransactions(Long.valueOf(id), Integer.valueOf(k));
-            return ResponseEntity.status(HttpStatus.OK).body(history);
-        }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    @GetMapping(path="/statement/{months}/{id}")
+    public ResponseEntity<List<Transaction>> getStatement(@PathVariable("id") Long id, @PathVariable("months") int m) {
+        List<Transaction> list = transactionService.getStatement(id, m);
+        return ResponseEntity.status(HttpStatus.OK).body(list);
+
     }
 
 }

@@ -1,11 +1,7 @@
 package com.wellsfargo.bankapp.entity;
 
-import com.wellsfargo.bankapp.entity.account.FDAccount;
-import com.wellsfargo.bankapp.entity.account.SavingsAccount;
-
-import java.time.LocalDate;
+import org.hibernate.annotations.GenericGenerator;
 import java.time.LocalDateTime;
-import java.util.List;
 
 import javax.persistence. *;
 
@@ -13,42 +9,32 @@ import javax.persistence. *;
 @Table(name="customer")
 public class Customer {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(
+            generator="customer-id-generator"
+    )
+    @GenericGenerator(
+            name="customer-id-generator",
+            strategy="com.wellsfargo.bankapp.generator.CustomerIdGenerator"
+    )
     private Long id;
-
     @Column(name="first_name")
     private String firstName;
-
     @Column(name="last_name")
     private String lastName;
-
     @Column(name="address")
     private String address;
     @Column(name="email")
     private String email;
-
     @Column(name="password")
     private String password;
-
     @Column(name="age")
     private int age;
-
     @Column(name="gender")
     private String gender;
-
     @Column(name="mobile_number")
     private Long mobileNumber;
-
 	@Column(name="date_became_customer")
 	private LocalDateTime dateBecameCustomer;
-
-    @Column(name="savings_account")
-    @OneToMany(mappedBy="customer")
-    private List<SavingsAccount> savingsAccountList;
-
-    @Column(name="fd_account")
-    @OneToMany(mappedBy="customer")
-    private List<FDAccount> fdAccountList;
 
     public Customer() {}
 
@@ -56,8 +42,8 @@ public class Customer {
             String firstName,
             String lastName,
             String address,
-            String password,
             String email,
+            String password,
             int age,
             String gender,
             Long mobileNumber,
@@ -66,8 +52,8 @@ public class Customer {
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
-        this.password = password;
         this.email = email;
+        this.password = password;
         this.age = age;
         this.gender = gender;
         this.mobileNumber = mobileNumber;
@@ -150,13 +136,6 @@ public class Customer {
         this.dateBecameCustomer = dateBecameCustomer;
     }
 
-    public List<SavingsAccount> getSavingsAccountList() {
-        return savingsAccountList;
-    }
-
-    public List<FDAccount> getFdAccountList() {
-        return fdAccountList;
-    }
 }
 
 

@@ -1,10 +1,13 @@
 package com.wellsfargo.bankapp.service;
 
+import com.wellsfargo.bankapp.dto.SavingsAccountDTO;
 import com.wellsfargo.bankapp.entity.Customer;
 import com.wellsfargo.bankapp.entity.account.SavingsAccount;
+import com.wellsfargo.bankapp.exception.CustomerNotFoundException;
+import com.wellsfargo.bankapp.exception.SavingsAccountNotFoundException;
+import com.wellsfargo.bankapp.mapper.SavingsAccountDTOMapper;
 import com.wellsfargo.bankapp.repository.SavingsAccountRepo;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -15,34 +18,39 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class SavingsAccountService {
-    @Autowired
-    private SavingsAccountRepo savingsAccountRepo;
-    @Autowired
-    CustomerService customerService;
 
-    public SavingsAccountService(SavingsAccountRepo savingsAccountRepo) {
+    private SavingsAccountRepo savingsAccountRepo;
+    private final SavingsAccountDTOMapper savingsAccountDTOMapper;
+    private final CustomerService customerService;
+    @Autowired
+    public SavingsAccountService(SavingsAccountRepo savingsAccountRepo, SavingsAccountDTOMapper savingsAccountDTOMapper, CustomerService customerService) {
         this.savingsAccountRepo = savingsAccountRepo;
+        this.savingsAccountDTOMapper = savingsAccountDTOMapper;
+        this.customerService = customerService;
     }
 
-    public int  createSavingsAccount(Long customerId, double depositAmount) throws Exception {
-        Optional<Customer> customer = customerService.findCustomerById(customerId);
-        if(!customer.isPresent()){
-            // customer not present
-            return 0;
-        }
+    public void  createSavingsAccount(Long customerId, double depositAmount, Boolean hasCreditCard, Boolean hasDebitCard) throws Exception {
+        Customer customer = customerService.findCustomerByIdInternal(customerId);
         if(depositAmount >= SavingsAccount.minBalance){
-            savingsAccountRepo.save(new SavingsAccount(customer.get(), LocalDateTime.now(), depositAmount));
-            return 1;
+            savingsAccountRepo.save(new SavingsAccount(
+                    customer, LocalDateTime.now(), depositAmount, hasCreditCard, hasDebitCard
+                )
+            );
         }
         else{
-            // deposit amount has to be more than minimum balance
-            return 2;
+            throw new Exception("Deposit amount has to be more than minimum balance.");
         }
     }
     
-    public Optional<SavingsAccount> findSavingsAccountById(Long id) {
-    	Optional<SavingsAccount> savingsAccountById = savingsAccountRepo.findById(id);
-    	return savingsAccountById;
+    public SavingsAccountDTO findSavingsAccountById(Long id) {
+        return savingsAccountRepo.findById(id)
+                .map(savingsAccountDTOMapper)
+                .orElseThrow(() -> new SavingsAccountNotFoundException("Savings account by id " + id + " was not found."));
+    }
+
+    public SavingsAccount findSavingsAccountByIdInternal(Long id) {
+        return savingsAccountRepo.findById(id)
+                .orElseThrow(() -> new SavingsAccountNotFoundException("Savings account by id " + id + " was not found."));
     }
 
     @Scheduled(cron="0 0 2 * * ?") // Schedule it to run at 2:00 AM daily

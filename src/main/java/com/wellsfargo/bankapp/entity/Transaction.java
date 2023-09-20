@@ -1,17 +1,23 @@
 package com.wellsfargo.bankapp.entity;
 
 import com.wellsfargo.bankapp.entity.account.SavingsAccount;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name="transactions")
 public class Transaction {
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int Id;
+	@GeneratedValue(
+			generator="transaction-id-generator"
+	)
+	@GenericGenerator(
+			name="transaction-id-generator",
+			strategy="com.wellsfargo.bankapp.generator.TransactionIdGenerator"
+	)
+	private Long id;
 	@Column(name="amount")
 	private double amount;
 	@Column(name="date_of_transaction")
@@ -75,5 +81,17 @@ public class Transaction {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setAmount(double amount) {
+		this.amount = amount;
 	}
 }

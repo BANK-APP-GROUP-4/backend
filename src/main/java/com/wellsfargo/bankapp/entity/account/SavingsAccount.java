@@ -2,6 +2,7 @@ package com.wellsfargo.bankapp.entity.account;
 
 import com.wellsfargo.bankapp.entity.Customer;
 import com.wellsfargo.bankapp.entity.Transaction;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -15,8 +16,14 @@ public class SavingsAccount {
     public static double monthlyMaintenanceFee = 100;
 
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private Long Id;
+    @GeneratedValue(
+            generator="account-id-generator"
+    )
+    @GenericGenerator(
+            name="account-id-generator",
+            strategy="com.wellsfargo.bankapp.generator.AccountIdGenerator"
+    )
+    private Long id;
     @ManyToOne
     @JoinColumn(name="customer_id")
     private Customer customer;
@@ -24,40 +31,33 @@ public class SavingsAccount {
     private LocalDateTime activationDate;
     @Column(name="balance")
     private double balance;
-    @OneToMany(mappedBy="receiverAcc")
-    private List<Transaction> creditTransactions;
 
-    @OneToMany(mappedBy="senderAcc")
-    private List<Transaction> debitTransactions;
+    @Column(name="has_credit_card")
+    private Boolean hasCreditCard;
+    @Column(name="has_debit_card")
+    private Boolean hasDebitCard;
 
     public SavingsAccount() {}
-
-    public SavingsAccount(Customer customer, LocalDateTime activationDate, double balance) {
-        this.customer = customer;
-        this.activationDate = activationDate;
-        this.balance = balance;
-    }
-
     public SavingsAccount(
             Customer customer,
             LocalDateTime activationDate,
             double balance,
-            List<Transaction> creditTransactions,
-            List<Transaction> debitTransactions
+            Boolean hasCreditCard,
+            Boolean hasDebitCard
     ) {
         this.customer = customer;
         this.activationDate = activationDate;
         this.balance = balance;
-        this.creditTransactions = creditTransactions;
-        this.debitTransactions = debitTransactions;
+        this.hasCreditCard = hasCreditCard;
+        this.hasDebitCard = hasDebitCard;
     }
 
     public Long getId() {
-        return Id;
+        return id;
     }
 
     public void setId(Long id) {
-        Id = id;
+        this.id = id;
     }
 
     public LocalDateTime getActivationDate() {
@@ -84,19 +84,19 @@ public class SavingsAccount {
         this.balance = balance;
     }
 
-    public List<Transaction> getCreditTransactions() {
-        return creditTransactions;
+    public Boolean getHasCreditCard() {
+        return hasCreditCard;
     }
 
-    public void setCreditTransactions(List<Transaction> creditTransactions) {
-        this.creditTransactions = creditTransactions;
+    public void setHasCreditCard(Boolean hasCreditCard) {
+        this.hasCreditCard = hasCreditCard;
     }
 
-    public List<Transaction> getDebitTransactions() {
-        return debitTransactions;
+    public Boolean getHasDebitCard() {
+        return hasDebitCard;
     }
 
-    public void setDebitTransactions(List<Transaction> debitTransactions) {
-        this.debitTransactions = debitTransactions;
+    public void setHasDebitCard(Boolean hasDebitCard) {
+        this.hasDebitCard = hasDebitCard;
     }
 }
