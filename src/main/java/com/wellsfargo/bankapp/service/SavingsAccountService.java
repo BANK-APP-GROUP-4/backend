@@ -1,10 +1,14 @@
 package com.wellsfargo.bankapp.service;
 
 import com.wellsfargo.bankapp.entity.Customer;
+import com.wellsfargo.bankapp.entity.Transaction;
 import com.wellsfargo.bankapp.entity.account.SavingsAccount;
 import com.wellsfargo.bankapp.repository.SavingsAccountRepo;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -78,5 +82,55 @@ public class SavingsAccountService {
         double newBalance = account.getBalance() + interest;
         account.setBalance(newBalance);
         savingsAccountRepo.save(account);
+    }
+    
+    public List<Transaction> getTransactionHistory(Long id){
+    	Optional<SavingsAccount> savingsAccountOp = findSavingsAccountById(id);
+    	List<Transaction> history = new ArrayList<>();
+        if(savingsAccountOp.isPresent()){
+            SavingsAccount savingsAccount = savingsAccountOp.get();
+            List<Transaction> credTransactions = savingsAccount.getCreditTransactions();
+            List<Transaction> debTransactions = savingsAccount.getDebitTransactions();
+            Collections.reverse(debTransactions);
+            Collections.reverse(credTransactions);
+
+            
+            Integer i1=0;
+            Integer i2=0;
+            
+            while(i1<credTransactions.size() && i2<debTransactions.size()) {
+            	LocalDateTime dateTime1=credTransactions.get(i1).getDateOfTransaction();
+    			LocalDateTime dateTime2=debTransactions.get(i2).getDateOfTransaction();
+    			if(dateTime1.isAfter(dateTime2)) {
+    				history.add(credTransactions.get(i1));
+    				i1=i1+1;
+    				
+    			}else {
+    				Transaction temp=debTransactions.get(i2);
+            		
+            		temp.setAmount((temp.getAmount())*(-1));
+            		history.add(temp);
+    				//history.add(debTransactions.get(i2));
+    				i2=i2+1;
+    				
+    			}
+            }
+            if(i1<credTransactions.size()) {
+            	for(int i=i1;i<credTransactions.size();i++) {
+            		history.add(credTransactions.get(i));
+            	}
+            }
+            if(i2<debTransactions.size()) {
+            	for(int i=i2;i<debTransactions.size();i++) {
+            		Transaction temp=debTransactions.get(i);
+            		
+            		temp.setAmount((temp.getAmount())*(-1));
+            		history.add(temp);
+            	}
+            }
+
+            
+    }
+        return history;
     }
 }

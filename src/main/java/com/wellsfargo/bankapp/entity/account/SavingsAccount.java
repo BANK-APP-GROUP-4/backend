@@ -1,5 +1,6 @@
 package com.wellsfargo.bankapp.entity.account;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.wellsfargo.bankapp.entity.Customer;
 import com.wellsfargo.bankapp.entity.Transaction;
 
@@ -18,13 +19,25 @@ public class SavingsAccount {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long Id;
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name="customer_id")
     private Customer customer;
     @Column(name="activation_date")
     private LocalDate activationDate;
     @Column(name="balance")
     private double balance;
-    @OneToMany(mappedBy="receiverAcc")
+    @Column(name="accountStatus")
+    private boolean accountStatus;
+    
+    public boolean isAccountStatus() {
+		return accountStatus;
+	}
+
+	public void setAccountStatus(boolean accountStatus) {
+		this.accountStatus = accountStatus;
+	}
+
+	@OneToMany(mappedBy="receiverAcc")
     private List<Transaction> creditTransactions;
 
     @OneToMany(mappedBy="senderAcc")

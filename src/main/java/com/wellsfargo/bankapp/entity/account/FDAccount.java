@@ -1,5 +1,6 @@
 package com.wellsfargo.bankapp.entity.account;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.wellsfargo.bankapp.entity.Customer;
 
 import javax.persistence.*;
@@ -20,6 +21,7 @@ public class FDAccount {
     @Column(name="activation_date")
     private LocalDate activationDate;
     @ManyToOne
+	@JsonBackReference
     @JoinColumn(name="customer_id")
     private Customer customer;
     @Column(name="principal_amount")

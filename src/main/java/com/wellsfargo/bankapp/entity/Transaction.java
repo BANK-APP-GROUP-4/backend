@@ -1,9 +1,10 @@
 package com.wellsfargo.bankapp.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.wellsfargo.bankapp.entity.account.SavingsAccount;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name="transactions")
@@ -14,21 +15,23 @@ public class Transaction {
 	@Column(name="amount")
 	private double amount;
 	@Column(name="date_of_transaction")
-	private LocalDate dateOfTransaction;
+	private LocalDateTime dateOfTransaction;
 
 	@Column(name="transaction_status")
 	private String status;
 	@ManyToOne
+	@JsonBackReference
 	@JoinColumn(name="sender_account_id")
 	private SavingsAccount senderAcc;
 
 	@ManyToOne
+	@JsonBackReference
 	@JoinColumn(name="receiver_account_id")
 	private SavingsAccount receiverAcc;
 
 	public Transaction() {}
 
-	public Transaction(SavingsAccount senderAcc, SavingsAccount receiverAcc, double amount, LocalDate dateOfTransaction, String status) {
+	public Transaction(SavingsAccount senderAcc, SavingsAccount receiverAcc, double amount, LocalDateTime dateOfTransaction, String status) {
 		this.senderAcc = senderAcc;
 		this.receiverAcc = receiverAcc;
 		this.amount = amount;
@@ -48,7 +51,7 @@ public class Transaction {
 		return receiverAcc;
 	}
 
-	public void setAmount(Long amount) {
+	public void setAmount(double amount) {
 		this.amount = amount;
 	}
 
@@ -60,11 +63,11 @@ public class Transaction {
 		this.receiverAcc = receiverAcc;
 	}
 
-	public LocalDate getDateOfTransaction() {
+	public LocalDateTime getDateOfTransaction() {
 		return dateOfTransaction;
 	}
 
-	public void setDateOfTransaction(LocalDate dateOfTransaction) {
+	public void setDateOfTransaction(LocalDateTime dateOfTransaction) {
 		this.dateOfTransaction = dateOfTransaction;
 	}
 
