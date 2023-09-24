@@ -1,45 +1,52 @@
 package com.wellsfargo.bankapp.service;
 
+import com.wellsfargo.bankapp.dto.FDAccountDTO;
 import com.wellsfargo.bankapp.entity.Customer;
 import com.wellsfargo.bankapp.entity.account.FDAccount;
-import com.wellsfargo.bankapp.entity.account.SavingsAccount;
+import com.wellsfargo.bankapp.exception.FDAccountNotFoundException;
+import com.wellsfargo.bankapp.mapper.FDAccountDTOMapper;
 import com.wellsfargo.bankapp.repository.FDAccountRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalDateTime;
 
 @Service
 public class FDAccountService {
     @Autowired
-    private FDAccountRepo fdAccountRepo;
-
+    private final FDAccountRepo fdAccountRepo;
     @Autowired
-    private CustomerService customerService;
+    private final CustomerService customerService;
+    @Autowired
+    private final FDAccountDTOMapper fdAccountDTOMapper;
 
-    public FDAccountService(FDAccountRepo fdAccountRepo) {
+    public FDAccountService(
+            FDAccountRepo fdAccountRepo,
+            CustomerService customerService,
+            FDAccountDTOMapper fdAccountDTOMapper
+    ) {
         this.fdAccountRepo = fdAccountRepo;
+        this.customerService = customerService;
+        this.fdAccountDTOMapper = fdAccountDTOMapper;
     }
 
     public void  createFDAccount(Long customerId, double principalAmount, int maturityPeriod) throws Exception {
-        Optional<Customer> customer = customerService.findCustomerById(customerId);
-        if(!customer.isPresent()){
-            throw new Exception("Customer not present.");
-        }
+        Customer customer = customerService.findCustomerByIdInternal(customerId);
         if(principalAmount >= FDAccount.minPrincipalAmount){
             fdAccountRepo.save(
                     new FDAccount(
-                            LocalDate.now(),
-                            customer.get(),
-                            principalAmount,
-                            maturityPeriod
+                            LocalDateTime.now(), customer, principalAmount, maturityPeriod
                     )
             );
         }
         else{
-            throw new Exception("Principal amount has to be more than minimum balance.");
+            throw new Exception("Principal amount must be more than minimum balance.");
         }
+    }
+
+    public FDAccountDTO findSavingsAccountById(Long id) {
+        return fdAccountRepo.findById(id)
+                .map(fdAccountDTOMapper)
+                .orElseThrow(() -> new FDAccountNotFoundException("FD account by id " + id + " was not found."));
     }
 }

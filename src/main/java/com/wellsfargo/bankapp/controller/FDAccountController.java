@@ -1,14 +1,13 @@
 package com.wellsfargo.bankapp.controller;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.wellsfargo.bankapp.dto.FDAccountDTO;
 import com.wellsfargo.bankapp.service.FDAccountService;
-import com.wellsfargo.bankapp.service.SavingsAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -18,13 +17,23 @@ public class FDAccountController {
 
     @Autowired
     FDAccountService fdAccountService;
-
+    private final ObjectMapper objectMapper = new ObjectMapper();
     @PostMapping
-    ResponseEntity<String> createFDAccount(@RequestBody Map<String, Object> jsonObj) throws Exception {
-        Object customerId = jsonObj.get("customerId");
-        Object principalAmount = jsonObj.get("principalAmount");
-        Object maturityPeriod = jsonObj.get("maturityPeriod");
-        fdAccountService.createFDAccount(new Long(customerId.toString()), new Double(principalAmount.toString()), new Integer(maturityPeriod.toString()));
+    ResponseEntity<String> createFDAccount(@RequestBody String createFDRequest) throws Exception {
+
+        JsonNode createFDRequestNode = objectMapper.readTree(createFDRequest);
+
+        Long customerId = createFDRequestNode.get("customerId").asLong();
+        double principalAmount = createFDRequestNode.get("principalAmount").asDouble();
+        int maturityPeriod = createFDRequestNode.get("maturityPeriod").asInt();
+
+        fdAccountService.createFDAccount(customerId, principalAmount, maturityPeriod);
         return new ResponseEntity<>("FD Account created successfully.", HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<FDAccountDTO> getFDAccountDetails(@PathVariable("id") Long id){
+        FDAccountDTO fdAccount = fdAccountService.findSavingsAccountById(id);
+        return new ResponseEntity<>(fdAccount, HttpStatus.OK);
     }
 }

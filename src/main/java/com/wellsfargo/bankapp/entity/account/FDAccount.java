@@ -2,9 +2,10 @@ package com.wellsfargo.bankapp.entity.account;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.wellsfargo.bankapp.entity.Customer;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 
 @Entity
@@ -16,10 +17,16 @@ public class FDAccount {
     public static double penaltyForEarlyWithdrawal = 0.01;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
+    @GeneratedValue(
+            generator="account-id-generator"
+    )
+    @GenericGenerator(
+            name="account-id-generator",
+            strategy="com.wellsfargo.bankapp.generator.AccountIdGenerator"
+    )
+    private Long id;
     @Column(name="activation_date")
-    private LocalDate activationDate;
+    private LocalDateTime activationDate;
     @ManyToOne
 	@JsonBackReference
     @JoinColumn(name="customer_id")
@@ -28,21 +35,27 @@ public class FDAccount {
     private double principalAmount;
     @Column(name="maturity_period")
     private int maturityPeriod;
-
     public FDAccount(){}
-
-    public FDAccount(LocalDate activationDate, Customer customer, double principalAmount, int maturityPeriod) {
+    public FDAccount(LocalDateTime activationDate, Customer customer, double principalAmount, int maturityPeriod) {
         this.activationDate = activationDate;
         this.customer = customer;
         this.principalAmount = principalAmount;
         this.maturityPeriod = maturityPeriod;
     }
 
-    public LocalDate getActivationDate() {
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public LocalDateTime getActivationDate() {
         return activationDate;
     }
 
-    public void setActivationDate(LocalDate activationDate) {
+    public void setActivationDate(LocalDateTime activationDate) {
         this.activationDate = activationDate;
     }
 

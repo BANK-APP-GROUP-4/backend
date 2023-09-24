@@ -125,9 +125,9 @@ public class AdminService {
 	public String updateBalance(long accNumber,long amount) {
 		
 		SavingsAccount account=null;
-		Optional<SavingsAccount> sa =savingsAccountService.findSavingsAccountById(accNumber);
-		if(sa.isPresent()) {
-			account=sa.get();
+		SavingsAccount sa =savingsAccountService.findSavingsAccountByIdInternal(accNumber);
+		if(sa!=null) {
+			account=sa;
 		}else {
 			return "Account Not Found.";
 			

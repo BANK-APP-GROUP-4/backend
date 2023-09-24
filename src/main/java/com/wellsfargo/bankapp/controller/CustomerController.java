@@ -1,24 +1,66 @@
 package com.wellsfargo.bankapp.controller;
 
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.wellsfargo.bankapp.mapper.CustomerDTOMapper;
+import com.wellsfargo.bankapp.dto.CustomerDTO;
 import com.wellsfargo.bankapp.entity.Customer;
 import com.wellsfargo.bankapp.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/v1/customer")
+@RequestMapping(path="api/v1/customer")
+@CrossOrigin(origins="http://localhost:3001")
 public class CustomerController {
+    private final CustomerService customerService;
+    private final ObjectMapper objectMapper = new ObjectMapper();
     @Autowired
-    private CustomerService customerService;
-    
-    @CrossOrigin(origins="http://localhost:3001")
-    @PostMapping("/add")
-    void addCustomer(@RequestBody Customer customer){
-        customerService.addCustomer(customer);
+    public CustomerController(CustomerService customerService) {
+        this.customerService = customerService;
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<String> registerCustomer(@RequestBody Customer customer){
+        customerService.registerCustomer(customer);
+        return new ResponseEntity<>("Customer successfully registered.", HttpStatus.OK);
+
+    }
+
+    @PostMapping("/login")
+    public  ResponseEntity<String> loginCustomer(@RequestBody String loginRequest) throws IOException {
+        JsonNode loginRequestNode = objectMapper.readTree(loginRequest);
+
+        String email = loginRequestNode.get("email").asText();
+        String password = loginRequestNode.get("password").asText();
+
+        Boolean isSuccessful = customerService.validateCustomer(email, password);
+        if(isSuccessful){
+            // todo: jwt Authentication
+            return new ResponseEntity<>("Logged in successfully.", HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity<>("Login unsuccessful", HttpStatus.UNAUTHORIZED);
+        }
+    }
+
+    @GetMapping(path="{id}")
+    public ResponseEntity<Customer> getCustomerDetails(@PathVariable("id") Long id){
+        Customer customer = customerService.findCustomerByIdInternal(id);
+        return new ResponseEntity<>(customer, HttpStatus.OK);
+
+    }
+
+    @GetMapping(path="/all")
+    public ResponseEntity<List<CustomerDTO>> getAllEmployees(){
+        List<CustomerDTO> customers = customerService.findAllCustomers();
+        return new ResponseEntity<>(customers, HttpStatus.OK);
     }
 }
