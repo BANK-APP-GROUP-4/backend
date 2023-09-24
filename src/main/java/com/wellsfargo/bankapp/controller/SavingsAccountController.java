@@ -34,7 +34,8 @@ public class SavingsAccountController {
         return new ResponseEntity<>("Savings account successfully created.", HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
+    @RequestMapping(value = "/{id}", method = RequestMethod.POST, 
+            headers = "Accept=application/json")
     public ResponseEntity<SavingsAccountDTO> getSavingsAccountDetails(@PathVariable("id") Long id){
         SavingsAccountDTO savingsAccount = savingsAccountService.findSavingsAccountById(id);
         return new ResponseEntity<>(savingsAccount, HttpStatus.OK);
