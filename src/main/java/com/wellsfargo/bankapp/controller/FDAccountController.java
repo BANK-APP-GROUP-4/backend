@@ -31,7 +31,8 @@ public class FDAccountController {
         return new ResponseEntity<>("FD Account created successfully.", HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
+    @RequestMapping(value = "/{id}", method = RequestMethod.POST, 
+            headers = "Accept=application/json")
     public ResponseEntity<FDAccountDTO> getFDAccountDetails(@PathVariable("id") Long id){
         FDAccountDTO fdAccount = fdAccountService.findSavingsAccountById(id);
         return new ResponseEntity<>(fdAccount, HttpStatus.OK);

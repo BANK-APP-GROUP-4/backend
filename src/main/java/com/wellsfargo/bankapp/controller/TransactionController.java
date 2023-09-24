@@ -42,7 +42,9 @@ public class TransactionController {
     }
 
     @ResponseBody
-    @GetMapping(path="/last/{k}/{id}")
+//    @GetMapping(path="/last/{k}/{id}")
+    @RequestMapping(value = "/last/{k}/{id}", method = RequestMethod.POST, 
+    headers = "Accept=application/json")
     public ResponseEntity<List<Transaction>> getLastKTransactionsOfCustomer(@PathVariable("id") Long id, @PathVariable("k") int k) {
         List<Transaction> history = transactionService.getLastKTransactions(id, k);
         return ResponseEntity.status(HttpStatus.OK).body(history);
@@ -50,7 +52,9 @@ public class TransactionController {
     }
 
     @ResponseBody
-    @GetMapping(path="/statement/{months}/{id}")
+//    @GetMapping(path="/statement/{months}/{id}")
+    @RequestMapping(value = "/statement/{months}/{id}", method = RequestMethod.POST, 
+    headers = "Accept=application/json")
     public ResponseEntity<List<Transaction>> getStatement(@PathVariable("id") Long id, @PathVariable("months") int m) {
         List<Transaction> list = transactionService.getStatement(id, m);
         return ResponseEntity.status(HttpStatus.OK).body(list);
