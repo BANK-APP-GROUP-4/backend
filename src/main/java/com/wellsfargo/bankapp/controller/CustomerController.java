@@ -9,6 +9,7 @@ import com.wellsfargo.bankapp.security.JwtHelper;
 import com.wellsfargo.bankapp.security.JwtResponse;
 import com.wellsfargo.bankapp.dto.CustomerDTO;
 import com.wellsfargo.bankapp.entity.Customer;
+import com.wellsfargo.bankapp.entity.account.SavingsAccount;
 import com.wellsfargo.bankapp.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,7 +23,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping(path="api/v1/customer")
-@CrossOrigin(origins="http://localhost:3001")
+@CrossOrigin(origins="http://localhost:3000")
 public class CustomerController {
     private final CustomerService customerService;
     private final ObjectMapper objectMapper = new ObjectMapper();
@@ -73,6 +74,23 @@ public class CustomerController {
     public ResponseEntity<Customer> getCustomerDetails(@PathVariable("id") Long id){
         Customer customer = customerService.findCustomerByIdInternal(id);
         return new ResponseEntity<>(customer, HttpStatus.OK);
+
+    }
+    
+    //added for local storage in UI
+    @RequestMapping(value = "/details/{email}", method = RequestMethod.POST, 
+            headers = "Accept=application/json")
+    public ResponseEntity<Customer> getCustomerDetailsByEmail(@PathVariable("email") String email){
+        Customer customer = customerService.findCustomerByEmail(email);
+        return new ResponseEntity<>(customer, HttpStatus.OK);
+
+    }
+    //added for local storage in UI
+    @RequestMapping(value = "/accounts/{id}", method = RequestMethod.POST, 
+            headers = "Accept=application/json")
+    public ResponseEntity<List<SavingsAccount>> getCustomerAccountsById(@PathVariable("id") Long id){
+        List<SavingsAccount> accounts = customerService.findCustomerAccountsById(id);
+        return new ResponseEntity<>(accounts, HttpStatus.OK);
 
     }
 

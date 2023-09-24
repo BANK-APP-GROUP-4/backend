@@ -2,9 +2,12 @@ package com.wellsfargo.bankapp.service;
 
 import com.wellsfargo.bankapp.dto.CustomerDTO;
 import com.wellsfargo.bankapp.entity.Customer;
+import com.wellsfargo.bankapp.entity.account.SavingsAccount;
 import com.wellsfargo.bankapp.exception.CustomerNotFoundException;
 import com.wellsfargo.bankapp.mapper.CustomerDTOMapper;
 import com.wellsfargo.bankapp.repository.CustomerRepo;
+import com.wellsfargo.bankapp.repository.SavingsAccountRepo;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +25,7 @@ public class CustomerService {
         this.customerDTOMapper = customerDTOMapper;
     }
 
+    	@Autowired SavingsAccountRepo savingsAccountRepo;
     public void registerCustomer(Customer customer){
         String email = customer.getEmail();
         Long mobileNumber = customer.getMobileNumber();
@@ -45,6 +49,16 @@ public class CustomerService {
     public Customer findCustomerByIdInternal(Long id){
         return customerRepo.findById(id)
                 .orElseThrow(() -> new CustomerNotFoundException("Customer by id " + id + " was not found."));
+    }
+    
+    public Customer findCustomerByEmail(String email){
+        return customerRepo.findCustomerByEmail(email)
+                .orElseThrow(() -> new CustomerNotFoundException("Customer by email " + email + " was not found."));
+    }
+    
+    public List<SavingsAccount> findCustomerAccountsById(long id){
+        return savingsAccountRepo.getAccountsById(id);
+                
     }
 
     public Boolean validateCustomer(String email, String password) {
