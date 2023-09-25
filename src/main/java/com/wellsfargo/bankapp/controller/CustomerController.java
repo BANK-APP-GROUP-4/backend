@@ -18,7 +18,9 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -41,6 +43,7 @@ public class CustomerController {
 
     @PostMapping("/register")
     public ResponseEntity<String> registerCustomer(@RequestBody Customer customer){
+    	System.out.print("reached");
         customerService.registerCustomer(customer);
         return new ResponseEntity<>("Customer successfully registered.", HttpStatus.OK);
 
@@ -56,16 +59,24 @@ public class CustomerController {
         Customer customer = cust.get();
         String token = this.helper.generateToken(customer);
 
-        JwtResponse response = JwtResponse.builder()
-                .tken(token)
-                .username(customer.getEmail()).build();
+        
         Boolean isSuccessful = customerService.validateCustomer(email, password);
         if(isSuccessful){
             // todo: jwt Authentication
+        	JwtResponse response = JwtResponse.builder()
+                    .tken(token)
+                    .username(customer.getEmail())
+                    .status("success")
+                    .message("Login Successful").build();
             return new ResponseEntity<>(response, HttpStatus.OK);
         }
         else{
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        	JwtResponse response2 = JwtResponse.builder()
+                    .tken("no token")
+                    .username("no username")
+                    .status("failure")
+                    .message("Invalid Credentials").build();
+            return new ResponseEntity<>(response2,HttpStatus.OK);
         }
     }
 
@@ -78,9 +89,14 @@ public class CustomerController {
     }
     
     //added for local storage in UI
-    @RequestMapping(value = "/details/{email}", method = RequestMethod.POST, 
+    @RequestMapping(value = "/details", method = RequestMethod.POST, 
             headers = "Accept=application/json")
-    public ResponseEntity<Customer> getCustomerDetailsByEmail(@PathVariable("email") String email){
+    public ResponseEntity<Customer> getCustomerDetailsByEmail(@RequestBody String request) throws IOException{
+    	JsonNode loginRequestNode = objectMapper.readTree(request);
+       
+    	
+    	
+        String email = loginRequestNode.get("email").asText();
         Customer customer = customerService.findCustomerByEmail(email);
         return new ResponseEntity<>(customer, HttpStatus.OK);
 

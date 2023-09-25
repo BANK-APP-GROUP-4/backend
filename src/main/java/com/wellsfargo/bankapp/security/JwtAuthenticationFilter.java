@@ -22,6 +22,7 @@ import com.wellsfargo.bankapp.repository.CustomerRepo;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import java.io.IOException;
+import java.util.Enumeration;
 import java.util.Optional;
 
 @Component
@@ -46,11 +47,20 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 //            throw new RuntimeException(e);
 //        }
         //Authorization
-        String requestHeader = request.getHeader("Authorization");
+        String requestHeader = request.getHeader("authorization");
+        Enumeration<String> headers = request.getHeaderNames();
+        while(headers.hasMoreElements()) {
+        	String headername = headers.nextElement();
+        	String headervalue = request.getHeader(headername);
+        	System.out.println(headername + ": " +headervalue);
+        }
+        
         //Bearer 2352345235sdfrsfgsdfsdf
+        System.out.println(requestHeader);
         if(requestHeader== null) {
         	requestHeader = "dummy string";
         }
+        System.out.println(requestHeader);
         logger.info(" Header :  {}", requestHeader.substring(7));
         String username = null;
         String token = null;
@@ -58,7 +68,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if (requestHeader != null && requestHeader.startsWith("Bearer")) {
             //looking good
             token = requestHeader.substring(7);
-            System.out.println(token);
             try {
 
                 username = this.jwtHelper.getUsernameFromToken(token);
