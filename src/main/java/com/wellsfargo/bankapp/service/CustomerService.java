@@ -79,4 +79,23 @@ public class CustomerService {
                 .map(customerDTOMapper)
                 .collect(Collectors.toList());
     }
+    
+    public String changePassword(String email,String password, String otp) {
+		String result = "";
+		Customer cust = null;
+		Optional<Customer> customerByEmailOp = customerRepo.findCustomerByEmail(email);
+		if (customerByEmailOp.isPresent())
+			cust = customerByEmailOp.get();
+		if (cust == null)
+			result = "Invalid customer";
+		else {
+			if (otp.equals("1111")) {
+				cust.setPassword(password);
+				customerRepo.save(cust);
+				result = "Success!";
+			} else
+				result = "Invalid OTP";
+		}
+		return result;
+	}
 }

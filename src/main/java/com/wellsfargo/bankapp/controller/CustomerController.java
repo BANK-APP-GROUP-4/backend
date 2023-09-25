@@ -93,7 +93,16 @@ public class CustomerController {
         return new ResponseEntity<>(accounts, HttpStatus.OK);
 
     }
-
+    //to change the password
+    @PutMapping("/changePassword/{otp}")
+	public String changePassword(@RequestBody String loginRequest, @PathVariable("otp") String otp) throws IOException {
+    	 JsonNode loginRequestNode = objectMapper.readTree(loginRequest);
+         
+         String email = loginRequestNode.get("email").asText();
+         String password = loginRequestNode.get("password").asText();
+    	return customerService.changePassword(email,password, otp);
+	}
+    
     @RequestMapping(value = "/all", method = RequestMethod.POST, 
             headers = "Accept=application/json")
     public ResponseEntity<List<CustomerDTO>> getAllEmployees(){
