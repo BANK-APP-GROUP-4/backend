@@ -49,10 +49,14 @@ public class SavingsAccountService {
                 .orElseThrow(() -> new SavingsAccountNotFoundException("Savings account by id " + id + " was not found."));
     }
     
-    public SavingsAccountDTO findSavingsAccountByCustId(Long cust_id) {
-        return savingsAccountRepo.findByCustId(cust_id)
-                .map(savingsAccountDTOMapper)
-                .orElseThrow(() -> new SavingsAccountNotFoundException("Savings account by id " + cust_id + " was not found."));
+    public List<SavingsAccount> findSavingsAccountByCustId(Long cust_id) {
+
+    	List<SavingsAccount> list=savingsAccountRepo.findByCustId(cust_id);
+    	for(SavingsAccount s1:list) {
+    		s1.setAccountStatus(true);
+    	}
+    	 return savingsAccountRepo.findByCustId(cust_id);
+                 
     }
 
     public SavingsAccount findSavingsAccountByIdInternal(Long id) {

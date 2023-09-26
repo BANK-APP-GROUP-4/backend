@@ -24,7 +24,7 @@ public class TransactionService {
         this.transactionRepo = transactionRepo;
     }
 
-    public void addTransaction(Long senderAccId, Long receiverAccId, double amount) throws Exception {
+    public String addTransaction(Long senderAccId, Long receiverAccId, double amount) throws Exception {
         if(senderAccId.equals(receiverAccId)){
             throw new Exception("Transferring money between same accounts is not allowed.");
         }
@@ -50,6 +50,10 @@ public class TransactionService {
                         senderAcc, receiverAcc, amount, LocalDateTime.now(), status
                 )
         );
+        if(status=="VALID") {
+        	return "Transaction Succesful!";
+        }
+        return "Uh Oh! Transaction Unsuccesful";
     }
 
     public List<Transaction> getLastKTransactions(Long id, int k) {

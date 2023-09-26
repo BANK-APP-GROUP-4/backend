@@ -36,15 +36,18 @@ public class TransactionController {
     }
 
     @PostMapping("/send")
-    public ResponseEntity<String> sendAmount(@RequestBody String sendAmountRequest) throws Exception {
+    public ResponseEntity<Map<String, String>> sendAmount(@RequestBody String sendAmountRequest) throws Exception {
         JsonNode sendAmountRequestNode = objectMapper.readTree(sendAmountRequest);
         Long senderAccId = sendAmountRequestNode.get("senderAccId").asLong();
         Long receiverAccId = sendAmountRequestNode.get("receiverAccId").asLong();
         double amount = sendAmountRequestNode.get("amount").asDouble();
-        transactionService.addTransaction(senderAccId, receiverAccId, amount);
-        return ResponseEntity.status(HttpStatus.OK).body("Successful transaction.");
-    }
+        //transactionService.addTransaction(senderAccId, receiverAccId, amount);
+        String message =transactionService.addTransaction(senderAccId, receiverAccId, amount);
+        Map<String,String> s=new HashMap<>();
+        s.put("message",message);
 
+        return ResponseEntity.status(HttpStatus.OK).body(s);
+    }
     @ResponseBody
 //    @GetMapping(path="/last/{k}/{id}")
     @RequestMapping(value = "/last", method = RequestMethod.POST, 

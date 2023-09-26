@@ -12,6 +12,6 @@ import org.springframework.data.jpa.repository.Query;
 public interface SavingsAccountRepo extends JpaRepository<SavingsAccount, Long> {
 
 	@Query("SELECT a FROM SavingsAccount a WHERE a.customer.id=:cust_id")
-    Optional<SavingsAccount> findByCustId(Long cust_id);
+    List<SavingsAccount> findByCustId(Long cust_id);
 		
 }
