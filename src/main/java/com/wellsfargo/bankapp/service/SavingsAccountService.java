@@ -48,6 +48,12 @@ public class SavingsAccountService {
                 .map(savingsAccountDTOMapper)
                 .orElseThrow(() -> new SavingsAccountNotFoundException("Savings account by id " + id + " was not found."));
     }
+    
+    public SavingsAccountDTO findSavingsAccountByCustId(Long cust_id) {
+        return savingsAccountRepo.findByCustId(cust_id)
+                .map(savingsAccountDTOMapper)
+                .orElseThrow(() -> new SavingsAccountNotFoundException("Savings account by id " + cust_id + " was not found."));
+    }
 
     public SavingsAccount findSavingsAccountByIdInternal(Long id) {
         return savingsAccountRepo.findById(id)

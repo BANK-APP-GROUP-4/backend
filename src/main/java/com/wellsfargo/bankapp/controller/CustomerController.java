@@ -1,6 +1,8 @@
 package com.wellsfargo.bankapp.controller;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wellsfargo.bankapp.mapper.CustomerDTOMapper;
@@ -25,6 +27,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping(path="api/v1/customer")
+@ResponseBody
 @CrossOrigin(origins="http://localhost:3000")
 public class CustomerController {
     private final CustomerService customerService;
@@ -62,13 +65,12 @@ public class CustomerController {
         
         Boolean isSuccessful = customerService.validateCustomer(email, password);
         if(isSuccessful){
-            // todo: jwt Authentication
         	JwtResponse response = JwtResponse.builder()
                     .tken(token)
                     .username(customer.getEmail())
                     .status("success")
                     .message("Login Successful").build();
-            return new ResponseEntity<>(response, HttpStatus.OK);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
         }
         else{
         	JwtResponse response2 = JwtResponse.builder()
@@ -76,12 +78,12 @@ public class CustomerController {
                     .username("no username")
                     .status("failure")
                     .message("Invalid Credentials").build();
-            return new ResponseEntity<>(response2,HttpStatus.OK);
+            //return new ResponseEntity<>(response2,HttpStatus.OK);
+            return ResponseEntity.status(HttpStatus.OK).body(response2);
         }
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.POST, 
-            headers = "Accept=application/json")
+    @RequestMapping(value = "/{id}", method = RequestMethod.POST, headers = "Accept=application/json")
     public ResponseEntity<Customer> getCustomerDetails(@PathVariable("id") Long id){
         Customer customer = customerService.findCustomerByIdInternal(id);
         return new ResponseEntity<>(customer, HttpStatus.OK);
@@ -91,24 +93,20 @@ public class CustomerController {
     //added for local storage in UI
     @RequestMapping(value = "/details", method = RequestMethod.POST, 
             headers = "Accept=application/json")
-    public ResponseEntity<Customer> getCustomerDetailsByEmail(@RequestBody String request) throws IOException{
+    public ResponseEntity<Map<String,Object>> getCustomerDetailsByEmail(@RequestBody String request) throws IOException{
     	JsonNode loginRequestNode = objectMapper.readTree(request);
        
     	
     	
         String email = loginRequestNode.get("email").asText();
         Customer customer = customerService.findCustomerByEmail(email);
-        return new ResponseEntity<>(customer, HttpStatus.OK);
+        Map<String, Object> details = new HashMap<>();
+        details.put("customer_details", customer);
+        details.put("status", "success");
+        return ResponseEntity.status(HttpStatus.OK).body(details);
 
     }
-    //added for local storage in UI
-    @RequestMapping(value = "/accounts/{id}", method = RequestMethod.POST, 
-            headers = "Accept=application/json")
-    public ResponseEntity<List<SavingsAccount>> getCustomerAccountsById(@PathVariable("id") Long id){
-        List<SavingsAccount> accounts = customerService.findCustomerAccountsById(id);
-        return new ResponseEntity<>(accounts, HttpStatus.OK);
 
-    }
     //to change the password
     @PutMapping("/changePassword/{otp}")
 	public String changePassword(@RequestBody String loginRequest, @PathVariable("otp") String otp) throws IOException {

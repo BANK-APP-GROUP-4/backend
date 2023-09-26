@@ -1,0 +1,162 @@
+[33mcommit ef27630dbf816b4a3b7c0d581f989d0d48cf07ce[m[33m ([m[1;36mHEAD -> [m[1;32myegi[m[33m, [m[1;31morigin/yegi[m[33m)[m
+Author: SharanPrasath <sharanprasath3008@gmail.com>
+Date:   Sat Sep 23 17:13:00 2023 +0530
+
+    JWT services pushed
+
+[33mcommit 6cc761af98f316b50881377138cb2d3f2c2a3647[m
+Author: yegyanathan <v.yegyanathan@gmail.com>
+Date:   Thu Sep 21 01:07:32 2023 +0530
+
+    endpoints working
+
+[33mcommit c8e949e1994025e7f03cbeaefa6ab01a7e898087[m
+Author: yegyanathan <v.yegyanathan@gmail.com>
+Date:   Wed Sep 20 01:07:19 2023 +0530
+
+    new update
+
+[33mcommit 4b4b11ffd560b65b4b39fb41fe543d26cf7ef314[m
+Author: yegyanathan <v.yegyanathan@gmail.com>
+Date:   Tue Sep 19 00:19:30 2023 +0530
+
+    new update
+
+[33mcommit d0bba883ecf960a1d9b774230711055a2606b8ff[m
+Author: yegyanathan <v.yegyanathan@gmail.com>
+Date:   Tue Sep 19 00:18:42 2023 +0530
+
+    new update
+
+[33mcommit bd41c465e97a635ce8b83bad7f57557c892f7fde[m
+Author: yegyanathan <v.yegyanathan@gmail.com>
+Date:   Fri Sep 15 01:10:48 2023 +0530
+
+    new update
+
+[33mcommit e1434f46f5f6ece0c332c9e6988b5a078177365a[m[33m ([m[1;31morigin/new[m[33m)[m
+Merge: 91d36cb 75e62be
+Author: Ritesh Rai <61109804+rai28@users.noreply.github.com>
+Date:   Wed Sep 13 09:06:15 2023 +0530
+
+    Merge pull request #4 from BANK-APP-GROUP-4/integration
+    
+    Integration
+
+[33mcommit 75e62be9bfb64f0a5de6b83ca51c46177564216f[m
+Author: SharanPrasath <sharanprasath3008@gmail.com>
+Date:   Wed Sep 13 09:05:08 2023 +0530
+
+    changes
+
+[33mcommit 2cd4fb07742961bab905567fc5dbbaf6d258eaa8[m
+Author: SharanPrasath <sharanprasath3008@gmail.com>
+Date:   Wed Sep 13 09:02:40 2023 +0530
+
+    changes
+
+[33mcommit b45ee9c9933b3967e82d4177eeced618bf9c5b72[m
+Author: SharanPrasath <sharanprasath3008@gmail.com>
+Date:   Tue Sep 12 15:34:27 2023 +0530
+
+    backend Registration Integration
+
+[33mcommit 91d36cb7fbaa7449b05848bd2ef668437e998638[m
+Author: yegyanathan <v.yegyanathan@gmail.com>
+Date:   Mon Sep 11 21:44:30 2023 +0530
+
+    updated again
+
+[33mcommit bd78b3ab9b1dfeafccdffcdac408246275189020[m
+Author: yegyanathan <v.yegyanathan@gmail.com>
+Date:   Mon Sep 11 20:30:26 2023 +0530
+
+    updated
+
+[33mcommit 6b94de00ee2a0f9033e4e06dd5f6e48433095e9b[m[33m ([m[1;31morigin/validation[m[33m)[m
+Author: saipranavvv <70323232+saipranavvv@users.noreply.github.com>
+Date:   Mon Sep 11 15:53:45 2023 +0530
+
+    Update Transaction.java
+
+[33mcommit 87d16ed395b3d037b587b480f1fe55bf04667a35[m
+Author: saipranavvv <70323232+saipranavvv@users.noreply.github.com>
+Date:   Mon Sep 11 15:53:19 2023 +0530
+
+    Updated Customer.java
+
+[33mcommit f68431c51a6127e9c2344298f2f14409b4e54652[m
+Author: saipranavvv <70323232+saipranavvv@users.noreply.github.com>
+Date:   Mon Sep 11 15:52:52 2023 +0530
+
+    Updated Account.java
+
+[33mcommit 80d26776be54958a44524d789f35b66fc51eb10c[m
+Merge: c85bc3b b072939
+Author: Ritesh Rai <61109804+rai28@users.noreply.github.com>
+Date:   Mon Sep 11 13:40:51 2023 +0530
+
+    Merge pull request #2 from BANK-APP-GROUP-4/rai
+    
+    Added Relationship Between Entities
+
+[33mcommit b07293925f96c4f5bb0ddc61245d464a011441e2[m[33m ([m[1;31morigin/rai[m[33m)[m
+Author: Ritesh Rai <riteshrai997@gmail.com>
+Date:   Mon Sep 11 12:07:21 2023 +0530
+
+    Added Relationship Between Entities
+
+[33mcommit c85bc3b0fe9a50faee94da869cc1a106b0cad0e3[m
+Merge: b07688d 18900f1
+Author: Ritesh Rai <61109804+rai28@users.noreply.github.com>
+Date:   Mon Sep 11 08:59:06 2023 +0530
+
+    Merge pull request #1 from BANK-APP-GROUP-4/rai
+    
+    Added fields for accounts table
+
+[33mcommit 18900f1031ea37046cd795a5c45308ccffeab12b[m
+Author: Ritesh Rai <riteshrai997@gmail.com>
+Date:   Mon Sep 11 08:58:19 2023 +0530
+
+    Added fields for accounts table
+
+[33mcommit b07688d8857508256c1fd2bc38e1f48519b21386[m
+Author: yegyanathan <v.yegyanathan@gmail.com>
+Date:   Mon Sep 11 08:34:43 2023 +0530
+
+    Updated customer controller
+
+[33mcommit d14413a77badda0780eb6ab932ad33c56987455d[m
+Author: preksha492 <65268607+preksha492@users.noreply.github.com>
+Date:   Mon Sep 11 08:25:51 2023 +0530
+
+    Update Customer.java
+
+[33mcommit 36eee67ff3f4cf6e5e11d11a90b06392a664348d[m
+Author: yegyanathan <v.yegyanathan@gmail.com>
+Date:   Mon Sep 11 08:21:08 2023 +0530
+
+    new push from yegi
+
+[33mcommit 9ba7d318e87e9eb37193c50e7953f074d2723d4b[m
+Author: SharanPrasath <80667110+SharanPrasath@users.noreply.github.com>
+Date:   Sun Sep 10 23:31:10 2023 +0530
+
+    Added Transaction table
+    
+    Some Variable errors may come because it depends on other file name and id!
+
+[33mcommit e59916c75f6453e4a54eea8da3997f49a2090e4b[m
+Author: saipranavvv <70323232+saipranavvv@users.noreply.github.com>
+Date:   Sun Sep 10 22:34:55 2023 +0530
+
+    Added basic project files
+    
+    Updated application.properties with database name set as "bankdb" in the url along with other required configurations
+
+[33mcommit 3eaa2d10099d096c8c95fe072d5063a00b783cc1[m
+Author: Yegyanathan V <58477218+yegyanathan@users.noreply.github.com>
+Date:   Sun Sep 10 17:57:25 2023 +0530
+
+    Initial commit

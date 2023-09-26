@@ -1,15 +1,19 @@
 package com.wellsfargo.bankapp.service;
 
 import com.wellsfargo.bankapp.dto.FDAccountDTO;
+import com.wellsfargo.bankapp.dto.SavingsAccountDTO;
 import com.wellsfargo.bankapp.entity.Customer;
 import com.wellsfargo.bankapp.entity.account.FDAccount;
 import com.wellsfargo.bankapp.exception.FDAccountNotFoundException;
+import com.wellsfargo.bankapp.exception.SavingsAccountNotFoundException;
 import com.wellsfargo.bankapp.mapper.FDAccountDTOMapper;
 import com.wellsfargo.bankapp.repository.FDAccountRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class FDAccountService {
@@ -48,5 +52,12 @@ public class FDAccountService {
         return fdAccountRepo.findById(id)
                 .map(fdAccountDTOMapper)
                 .orElseThrow(() -> new FDAccountNotFoundException("FD account by id " + id + " was not found."));
+    }
+    
+    public List<FDAccountDTO> findFDAccountsByCustId(Long cust_id) {
+        return fdAccountRepo.findByCustId(cust_id)
+        		.stream()
+                .map(fdAccountDTOMapper)
+                .collect(Collectors.toList());
     }
 }

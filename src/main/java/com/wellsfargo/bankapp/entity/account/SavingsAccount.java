@@ -1,5 +1,6 @@
 package com.wellsfargo.bankapp.entity.account;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.wellsfargo.bankapp.entity.Customer;
 import com.wellsfargo.bankapp.entity.Transaction;
 import org.hibernate.annotations.GenericGenerator;
@@ -26,6 +27,7 @@ public class SavingsAccount {
     private Long id;
     @ManyToOne
     @JoinColumn(name="customer_id")
+    @JsonBackReference
     private Customer customer;
     @Column(name="activation_date")
     private LocalDateTime activationDate;

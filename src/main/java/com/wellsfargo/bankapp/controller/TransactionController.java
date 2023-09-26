@@ -1,5 +1,7 @@
 package com.wellsfargo.bankapp.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wellsfargo.bankapp.entity.Transaction;
@@ -12,7 +14,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @CrossOrigin(origins="http://localhost:3001")
@@ -43,12 +47,20 @@ public class TransactionController {
 
     @ResponseBody
 //    @GetMapping(path="/last/{k}/{id}")
-    @RequestMapping(value = "/last/{k}/{id}", method = RequestMethod.POST, 
+    @RequestMapping(value = "/last", method = RequestMethod.POST, 
     headers = "Accept=application/json")
-    public ResponseEntity<List<Transaction>> getLastKTransactionsOfCustomer(@PathVariable("id") Long id, @PathVariable("k") int k) {
+    public ResponseEntity<Map<String, Object>> getLastKTransactionsOfCustomer(@RequestBody String req) throws JsonMappingException, JsonProcessingException {
+    	JsonNode reqNode = objectMapper.readTree(req);
+    	int k = reqNode.get("k").asInt();
+    	Long id = reqNode.get("id").asLong();
+    	
         List<Transaction> history = transactionService.getLastKTransactions(id, k);
-        return ResponseEntity.status(HttpStatus.OK).body(history);
-
+        
+        Map<String, Object> res = new HashMap<>();
+        res.put("status", "success");
+        res.put("message", "successful");
+        res.put("transactions",  history);
+        return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 
     @ResponseBody
