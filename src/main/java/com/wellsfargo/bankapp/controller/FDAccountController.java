@@ -46,7 +46,7 @@ public class FDAccountController {
         return new ResponseEntity<>(fdAccount, HttpStatus.OK);
     }
     
-    @RequestMapping(method = RequestMethod.POST, headers = "Accept=application/json")
+    @RequestMapping(value = "/getAccounts",method = RequestMethod.POST, headers = "Accept=application/json")
     public ResponseEntity<Map<String, Object>> getFDAccountDetails(@RequestBody String id) throws JsonMappingException, JsonProcessingException{
     	JsonNode loginRequestNode = objectMapper.readTree(id);
     	Long cust_id = loginRequestNode.get("customer_id").asLong();
