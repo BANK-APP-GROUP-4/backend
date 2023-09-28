@@ -49,12 +49,15 @@ public class SavingsAccountService {
                 .orElseThrow(() -> new SavingsAccountNotFoundException("Savings account by id " + id + " was not found."));
     }
     
-    public List<SavingsAccount> findSavingsAccountByCustId(Long cust_id) {
-
+    public List<SavingsAccount> findSavingsAccountByCustId (Long cust_id){
+        Customer customer = customerService.findCustomerByIdInternal(cust_id);  //to handle the case iif customer id is not found, exception will be thrown
+    	
     	List<SavingsAccount> list=savingsAccountRepo.findByCustId(cust_id);
+    	
     	for(SavingsAccount s1:list) {
     		s1.setAccountStatus(true);
     	}
+    	
     	 return savingsAccountRepo.findByCustId(cust_id);
                  
     }

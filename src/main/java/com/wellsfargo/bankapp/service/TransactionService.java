@@ -2,6 +2,7 @@ package com.wellsfargo.bankapp.service;
 
 import com.wellsfargo.bankapp.entity.account.SavingsAccount;
 import com.wellsfargo.bankapp.entity.Transaction;
+import com.wellsfargo.bankapp.exception.BalanceInsufficientException;
 import com.wellsfargo.bankapp.exception.SavingsAccountNotFoundException;
 import com.wellsfargo.bankapp.repository.TransactionRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,7 @@ public class TransactionService {
         else{
             // balance not enough
             status = "INVALID";
+            throw new BalanceInsufficientException("Uh Oh! Insufficient Balance");
         }
 
         transactionRepo.save(
