@@ -38,7 +38,11 @@ public class Customer {
 
     public Customer() {}
 
-    public Customer(
+    public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Customer(
             String firstName,
             String lastName,
             String address,

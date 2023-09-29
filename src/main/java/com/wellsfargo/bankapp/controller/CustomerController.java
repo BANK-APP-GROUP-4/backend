@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -36,6 +37,9 @@ public class CustomerController {
     private AuthenticationManager manager;
     @Autowired
     private CustomerRepo customerRepo;
+    
+    @Autowired 
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private JwtHelper helper;
@@ -47,6 +51,8 @@ public class CustomerController {
     @PostMapping("/register")
     public ResponseEntity<String> registerCustomer(@RequestBody Customer customer){
     	System.out.print("reached");
+    	String encodedPassword = passwordEncoder.encode(customer.getPassword());
+    	customer.setPassword(encodedPassword);
         customerService.registerCustomer(customer);
         return new ResponseEntity<>("Customer successfully registered.", HttpStatus.OK);
 
@@ -54,10 +60,12 @@ public class CustomerController {
 
     @PostMapping("/login")
     public  ResponseEntity<JwtResponse> loginCustomer(@RequestBody String loginRequest) throws IOException {
-        JsonNode loginRequestNode = objectMapper.readTree(loginRequest);
+        
+    	JsonNode loginRequestNode = objectMapper.readTree(loginRequest);
         
         String email = loginRequestNode.get("email").asText();
         String password = loginRequestNode.get("password").asText();
+//        password = passwordEncoder.encode(password);
         Optional<Customer> cust = customerRepo.findCustomerByEmail(email);
         Customer customer = cust.get();
         String token = this.helper.generateToken(customer);
