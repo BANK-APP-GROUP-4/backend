@@ -5,17 +5,13 @@ import com.wellsfargo.bankapp.entity.Customer;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
-
+import java.time.LocalDate;
 
 @Entity
 @Table(name="fd_account")
 public class FDAccount {
-
     public static double minPrincipalAmount = 5000;
     public static double interestRate = 0.071;
-    public static double penaltyForEarlyWithdrawal = 0.01;
-
     @Id
     @GeneratedValue(
             generator="account-id-generator"
@@ -26,21 +22,32 @@ public class FDAccount {
     )
     private Long id;
     @Column(name="activation_date")
-    private LocalDateTime activationDate;
+    private LocalDate activationDate;
+    @Column(name="account_status")
+    private Boolean accountStatus;
     @ManyToOne
 	@JsonBackReference
     @JoinColumn(name="customer_id")
     private Customer customer;
     @Column(name="principal_amount")
     private double principalAmount;
+    @Column(name="amount_at_maturity")
+    private double amountAtMaturity;
     @Column(name="maturity_period")
     private int maturityPeriod;
     public FDAccount(){}
-    public FDAccount(LocalDateTime activationDate, Customer customer, double principalAmount, int maturityPeriod) {
-        this.activationDate = activationDate;
+    public FDAccount(
+            Customer customer,
+            LocalDate activationDate,
+            double principalAmount,
+            int maturityPeriod,
+            Boolean accountStatus) {
         this.customer = customer;
+        this.activationDate = activationDate;
         this.principalAmount = principalAmount;
         this.maturityPeriod = maturityPeriod;
+        this.accountStatus = accountStatus;
+        this.amountAtMaturity = principalAmount + (principalAmount * interestRate * maturityPeriod);
     }
 
     public Long getId() {
@@ -51,11 +58,11 @@ public class FDAccount {
         this.id = id;
     }
 
-    public LocalDateTime getActivationDate() {
+    public LocalDate getActivationDate() {
         return activationDate;
     }
 
-    public void setActivationDate(LocalDateTime activationDate) {
+    public void setActivationDate(LocalDate activationDate) {
         this.activationDate = activationDate;
     }
 
@@ -73,5 +80,29 @@ public class FDAccount {
 
     public void setMaturityPeriod(int maturityPeriod) {
         this.maturityPeriod = maturityPeriod;
+    }
+
+    public Boolean getAccountStatus() {
+        return accountStatus;
+    }
+
+    public void setAccountStatus(Boolean accountStatus) {
+        this.accountStatus = accountStatus;
+    }
+
+    public double getAmountAtMaturity() {
+        return amountAtMaturity;
+    }
+
+    public void setAmountAtMaturity(double amountAtMaturity) {
+        this.amountAtMaturity = amountAtMaturity;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 }

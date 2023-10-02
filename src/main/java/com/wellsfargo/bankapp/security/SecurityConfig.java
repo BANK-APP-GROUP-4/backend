@@ -1,5 +1,6 @@
 package com.wellsfargo.bankapp.security;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,11 +50,11 @@ public class SecurityConfig {
 	@Bean
 	public CorsConfigurationSource corsConfigurationSource() {
 	    CorsConfiguration corsConfiguration = new CorsConfiguration();
-    	corsConfiguration.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type"));
-    	corsConfiguration.setAllowedOrigins(List.of("http://localhost:3000"));
-    	corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
+    	corsConfiguration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
+    	corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
+    	corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
     	corsConfiguration.setAllowCredentials(true);
-    	corsConfiguration.setExposedHeaders(List.of("Authorization"));
+    	corsConfiguration.setExposedHeaders(Arrays.asList("Authorization"));
     	
     	UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     	source.registerCorsConfiguration("/**", corsConfiguration);

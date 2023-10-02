@@ -4,8 +4,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.wellsfargo.bankapp.dto.SavingsAccountDTO;
+import com.wellsfargo.bankapp.entity.Customer;
 import com.wellsfargo.bankapp.entity.account.SavingsAccount;
+import com.wellsfargo.bankapp.service.CustomerService;
 import com.wellsfargo.bankapp.service.SavingsAccountService;
 
 import java.util.HashMap;
@@ -20,14 +21,13 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/v1/account/savings")
 public class SavingsAccountController {
-
-    @Autowired
     private final SavingsAccountService savingsAccountService;
-
+    private final CustomerService customerService;
     private final ObjectMapper objectMapper = new ObjectMapper();
     @Autowired
-    public SavingsAccountController(SavingsAccountService savingsAccountService) {
+    public SavingsAccountController(SavingsAccountService savingsAccountService, CustomerService customerService) {
         this.savingsAccountService = savingsAccountService;
+        this.customerService = customerService;
     }
 
     @PostMapping
@@ -38,7 +38,8 @@ public class SavingsAccountController {
         Boolean hasCreditCard = createSavingsRequestNode.get("hasCreditCard").asBoolean();
         Boolean hasDebitCard = createSavingsRequestNode.get("hasDebitCard").asBoolean();
 
-        savingsAccountService.createSavingsAccount(customerId, depositAmount, hasCreditCard, hasDebitCard);
+        Customer customer = customerService.findCustomerByIdInternal(customerId);
+        savingsAccountService.createSavingsAccount(customer, depositAmount, hasCreditCard, hasDebitCard);
         return new ResponseEntity<>("Savings account successfully created.", HttpStatus.OK);
     }
 

@@ -1,8 +1,8 @@
 package com.wellsfargo.bankapp.entity;
 
 import org.hibernate.annotations.GenericGenerator;
-import java.time.LocalDateTime;
 
+import java.time.LocalDate;
 import javax.persistence. *;
 
 @Entity
@@ -32,9 +32,9 @@ public class Customer {
     @Column(name="gender")
     private String gender;
     @Column(name="mobile_number")
-    private Long mobileNumber;
+    private String mobileNumber;
 	@Column(name="date_became_customer")
-	private LocalDateTime dateBecameCustomer;
+	private LocalDate dateBecameCustomer;
 
     public Customer() {}
 
@@ -46,8 +46,8 @@ public class Customer {
             String password,
             int age,
             String gender,
-            Long mobileNumber,
-            LocalDateTime dateBecameCustomer
+            String mobileNumber,
+            LocalDate dateBecameCustomer
     ) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -92,11 +92,11 @@ public class Customer {
         return gender;
     }
 
-    public Long getMobileNumber() {
+    public String getMobileNumber() {
         return mobileNumber;
     }
 
-    public LocalDateTime getDateBecameCustomer() {
+    public LocalDate getDateBecameCustomer() {
         return dateBecameCustomer;
     }
 
@@ -128,11 +128,11 @@ public class Customer {
         this.gender = gender;
     }
 
-    public void setMobileNumber(Long mobileNumber) {
+    public void setMobileNumber(String mobileNumber) {
         this.mobileNumber = mobileNumber;
     }
 
-    public void setDateBecameCustomer(LocalDateTime dateBecameCustomer) {
+    public void setDateBecameCustomer(LocalDate dateBecameCustomer) {
         this.dateBecameCustomer = dateBecameCustomer;
     }
 

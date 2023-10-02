@@ -9,8 +9,6 @@ import com.wellsfargo.bankapp.dto.FDAccountDTO;
 import com.wellsfargo.bankapp.dto.SavingsAccountDTO;
 import com.wellsfargo.bankapp.service.FDAccountService;
 
-import antlr.collections.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

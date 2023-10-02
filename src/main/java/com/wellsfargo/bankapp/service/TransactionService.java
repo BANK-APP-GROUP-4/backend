@@ -47,7 +47,7 @@ public class TransactionService {
 
         transactionRepo.save(
                 new Transaction(
-                        senderAcc, receiverAcc, amount, LocalDateTime.now(), status
+                        senderAcc, receiverAcc, amount, LocalDate.now(), status
                 )
         );
         if(status=="VALID") {
@@ -62,10 +62,9 @@ public class TransactionService {
         return history.stream().limit(k).collect(Collectors.toList());
     }
 
-    public List<Transaction> getStatement(Long id, int m) {
-        LocalDateTime oneMonthAgo = LocalDateTime.now().minusMonths(m);
+    public List<Transaction> getStatement(Long id, LocalDate from, LocalDate to) {
         savingsAccountService.findSavingsAccountByIdInternal(id);
-        List<Transaction> list = transactionRepo.getStatement(id, oneMonthAgo);
+        List<Transaction> list = transactionRepo.getStatement(id, from, to);
         return list;
     }
 }

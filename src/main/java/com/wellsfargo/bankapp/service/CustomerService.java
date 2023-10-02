@@ -28,7 +28,7 @@ public class CustomerService {
     	@Autowired SavingsAccountRepo savingsAccountRepo;
     public void registerCustomer(Customer customer){
         String email = customer.getEmail();
-        Long mobileNumber = customer.getMobileNumber();
+        String mobileNumber = customer.getMobileNumber();
         Optional<Customer> customerByEmail = customerRepo.findCustomerByEmail(email);
         Optional<Customer> customerByMobileNumber = customerRepo.findCustomerByMobileNumber(mobileNumber);
         if(customerByEmail.isPresent()){
@@ -57,7 +57,7 @@ public class CustomerService {
     }
     
     public List<SavingsAccount> findCustomerAccountsById(long id){
-        return savingsAccountRepo.getAccountsById(id);
+        return savingsAccountRepo.findByCustId(id);
                 
     }
 
@@ -98,4 +98,5 @@ public class CustomerService {
 		}
 		return result;
 	}
+
 }

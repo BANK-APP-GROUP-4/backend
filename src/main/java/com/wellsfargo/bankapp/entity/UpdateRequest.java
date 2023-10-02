@@ -3,8 +3,6 @@ package com.wellsfargo.bankapp.entity;
 import javax.persistence.Column;
 
 public class UpdateRequest {
-	
-
     @Column(nullable=false)
     private long accNumber;
 

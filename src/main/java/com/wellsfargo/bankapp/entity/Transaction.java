@@ -5,6 +5,7 @@ import com.wellsfargo.bankapp.entity.account.SavingsAccount;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -22,23 +23,23 @@ public class Transaction {
 	@Column(name="amount")
 	private double amount;
 	@Column(name="date_of_transaction")
-	private LocalDateTime dateOfTransaction;
+	private LocalDate dateOfTransaction;
 
 	@Column(name="transaction_status")
 	private String status;
 	@ManyToOne
-//	@JsonBackReference
+    @JsonBackReference
 	@JoinColumn(name="sender_account_id")
 	private SavingsAccount senderAcc;
 
 	@ManyToOne
-//	@JsonBackReference
+    @JsonBackReference
 	@JoinColumn(name="receiver_account_id")
 	private SavingsAccount receiverAcc;
 
 	public Transaction() {}
 
-	public Transaction(SavingsAccount senderAcc, SavingsAccount receiverAcc, double amount, LocalDateTime dateOfTransaction, String status) {
+	public Transaction(SavingsAccount senderAcc, SavingsAccount receiverAcc, double amount, LocalDate dateOfTransaction, String status) {
 		this.senderAcc = senderAcc;
 		this.receiverAcc = receiverAcc;
 		this.amount = amount;
@@ -66,11 +67,11 @@ public class Transaction {
 		this.receiverAcc = receiverAcc;
 	}
 
-	public LocalDateTime getDateOfTransaction() {
+	public LocalDate getDateOfTransaction() {
 		return dateOfTransaction;
 	}
 
-	public void setDateOfTransaction(LocalDateTime dateOfTransaction) {
+	public void setDateOfTransaction(LocalDate dateOfTransaction) {
 		this.dateOfTransaction = dateOfTransaction;
 	}
 

@@ -83,7 +83,7 @@ public class AdminService {
 	
 	public String disableAccount(long accno)
 	{
-		if(accRepo.findById(accno).isEmpty())
+		if(accRepo.findById(accno).isPresent())
 			return "Account not found";
 		SavingsAccount acc = accRepo.findById(accno).get();
 			if(acc.getBalance() < 10000)
@@ -94,12 +94,11 @@ public class AdminService {
 			}
 			else
 				return "Account cannot be disabled";
-		
 	}
 	
 	public String activateAccount(long accno)
 	{
-		if(accRepo.findById(accno).isEmpty())
+		if(accRepo.findById(accno).isPresent())
 			return "Account not found";
 		SavingsAccount acc = accRepo.findById(accno).get();
 			if(acc.getBalance() >= 10000)
@@ -124,7 +123,7 @@ public class AdminService {
 	
 	public String updateBalance(long accNumber,long amount) {
 		
-		SavingsAccount account=null;
+		SavingsAccount account = null;
 		SavingsAccount sa =savingsAccountService.findSavingsAccountByIdInternal(accNumber);
 		if(sa!=null) {
 			account=sa;

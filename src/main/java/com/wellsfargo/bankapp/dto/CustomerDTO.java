@@ -9,7 +9,7 @@ public class CustomerDTO {
     private String lastName;
     private String address;
     private String email;
-    private Long mobileNumber;
+    private String mobileNumber;
 
     public CustomerDTO() {}
 
@@ -19,7 +19,7 @@ public class CustomerDTO {
             String lastName,
             String address,
             String email,
-            Long mobileNumber
+            String mobileNumber
     ) {
         this.id = id;
         this.firstName = firstName;
@@ -49,7 +49,7 @@ public class CustomerDTO {
         return email;
     }
 
-    public Long getMobileNumber() {
+    public String getMobileNumber() {
         return mobileNumber;
     }
 }

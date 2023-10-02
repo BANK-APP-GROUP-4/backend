@@ -1,0 +1,114 @@
+{
+  "customers": [
+    {
+      "firstName": "John",
+      "lastName": "Doe",
+      "address": "123 Main St, Anytown",
+      "password": "pass123",
+      "email": "john.doe@example.com",
+      "age": 30,
+      "gender": "male",
+      "mobileNumber": "9876543210",
+      "dateBecameCustomer": "2022-01-15T14:22:45"
+    },
+    {
+      "firstName": "Alice",
+      "lastName": "Johnson",
+      "address": "456 Elm St, Springfield",
+      "password": "securepwd",
+      "email": "alice.j@example.com",
+      "age": 28,
+      "gender": "female",
+      "mobileNumber": "8765432109",
+      "dateBecameCustomer": "2021-11-02T09:35:20"
+    },
+    {
+      "firstName": "Michael",
+      "lastName": "Smith",
+      "address": "789 Oak St, Rivertown",
+      "password": "mikepass",
+      "email": "mike.smith@example.com",
+      "age": 35,
+      "gender": "male",
+      "mobileNumber": "7654321098",
+      "dateBecameCustomer": "2020-07-11T17:50:12"
+    },
+    {
+      "firstName": "Emma",
+      "lastName": "Brown",
+      "address": "101 Pine St, Hilltop",
+      "password": "emmapwd",
+      "email": "emma.b@example.com",
+      "age": 25,
+      "gender": "female",
+      "mobileNumber": "6543210987",
+      "dateBecameCustomer": "2019-04-30T11:05:55"
+    },
+    {
+      "firstName": "David",
+      "lastName": "Lee",
+      "address": "202 Cedar St, Laketown",
+      "password": "davidpass",
+      "email": "david.lee@example.com",
+      "age": 32,
+      "gender": "male",
+      "mobileNumber": "5432109876",
+      "dateBecameCustomer": "2018-12-18T08:14:37"
+    },
+    {
+      "firstName": "Sophia",
+      "lastName": "Clark",
+      "address": "303 Maple St, Greenvale",
+      "password": "sophiapwd",
+      "email": "sophia.c@example.com",
+      "age": 29,
+      "gender": "female",
+      "mobileNumber": "4321098765",
+      "dateBecameCustomer": "2017-06-25T15:30:28"
+    },
+    {
+      "firstName": "James",
+      "lastName": "White",
+      "address": "404 Birch St, Woodville",
+      "password": "jamespass",
+      "email": "james.white@example.com",
+      "age": 27,
+      "gender": "male",
+      "mobileNumber": "3210987654",
+      "dateBecameCustomer": "2016-09-14T18:42:09"
+    },
+    {
+      "firstName": "Olivia",
+      "lastName": "Hill",
+      "address": "505 Spruce St, Mountainview",
+      "password": "oliviapass",
+      "email": "olivia.h@example.com",
+      "age": 31,
+      "gender": "female",
+      "mobileNumber": "2109876543",
+      "dateBecameCustomer": "2015-02-09T22:20:33"
+    },
+    {
+      "firstName": "Ethan",
+      "lastName": "Adams",
+      "address": "606 Redwood St, Parkville",
+      "password": "ethanpass",
+      "email": "ethan.a@example.com",
+      "age": 33,
+      "gender": "male",
+      "mobileNumber": "1098765432",
+      "dateBecameCustomer": "2014-11-27T07:18:56"
+    },
+    {
+      "firstName": "Ava",
+      "lastName": "Fisher",
+      "address": "707 Hemlock St, Riverdale",
+      "password": "avapass",
+      "email": "ava.f@example.com",
+      "age": 26,
+      "gender": "female",
+      "mobileNumber": "9876543211",
+      "dateBecameCustomer": "2013-08-05T14:55:40"
+    }
+  ]
+}

@@ -1,5 +1,6 @@
 package com.wellsfargo.bankapp.controller;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -13,7 +14,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,9 +31,7 @@ public class TransactionController {
     private CustomerService customerService;
     @Autowired
     private SavingsAccountService savingsAccountService;
-
     private final ObjectMapper objectMapper = new ObjectMapper();
-
     public TransactionController(TransactionService transactionService) {
         this.transactionService = transactionService;
     }
@@ -48,10 +49,8 @@ public class TransactionController {
 
         return ResponseEntity.status(HttpStatus.OK).body(s);
     }
-    @ResponseBody
-//    @GetMapping(path="/last/{k}/{id}")
-    @RequestMapping(value = "/last", method = RequestMethod.POST, 
-    headers = "Accept=application/json")
+
+    @PostMapping(value="/last")
     public ResponseEntity<Map<String, Object>> getLastKTransactionsOfCustomer(@RequestBody String req) throws JsonMappingException, JsonProcessingException {
     	JsonNode reqNode = objectMapper.readTree(req);
     	int k = reqNode.get("k").asInt();
@@ -66,12 +65,24 @@ public class TransactionController {
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 
-    @ResponseBody
-//    @GetMapping(path="/statement/{months}/{id}")
-    @RequestMapping(value = "/statement/{months}/{id}", method = RequestMethod.POST, 
-    headers = "Accept=application/json")
-    public ResponseEntity<List<Transaction>> getStatement(@PathVariable("id") Long id, @PathVariable("months") int m) {
-        List<Transaction> list = transactionService.getStatement(id, m);
+    @PostMapping(value="/summary")
+    public ResponseEntity<List<Transaction>> getStatement(@RequestBody String req) throws JsonProcessingException {
+        JsonNode reqNode = objectMapper.readTree(req);
+
+        Long id = reqNode.get("id").asLong();
+        String fromDate = reqNode.get("from").toString();
+        String toDate = reqNode.get("to").toString();
+
+        System.out.println(fromDate);
+        System.out.println(toDate);
+
+        System.out.println(fromDate.replaceAll("\"", ""));
+        System.out.println(toDate.replaceAll("\"", ""));
+
+        LocalDate from = LocalDate.parse(fromDate.replaceAll("\"", ""));
+        LocalDate to = LocalDate.parse(toDate.replaceAll("\"", ""));
+
+        List<Transaction> list = transactionService.getStatement(id, from, to);
         return ResponseEntity.status(HttpStatus.OK).body(list);
 
     }
