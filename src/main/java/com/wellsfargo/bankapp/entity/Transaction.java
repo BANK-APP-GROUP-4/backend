@@ -28,12 +28,12 @@ public class Transaction {
 	@Column(name="transaction_status")
 	private String status;
 	@ManyToOne
-    @JsonBackReference
+//    @JsonBackReference
 	@JoinColumn(name="sender_account_id")
 	private SavingsAccount senderAcc;
 
 	@ManyToOne
-    @JsonBackReference
+//    @JsonBackReference
 	@JoinColumn(name="receiver_account_id")
 	private SavingsAccount receiverAcc;
 

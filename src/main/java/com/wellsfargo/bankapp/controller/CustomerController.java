@@ -139,7 +139,8 @@ public class CustomerController {
 
          String email = loginRequestNode.get("email").asText();
          String password = loginRequestNode.get("password").asText();
-    	return customerService.changePassword(email,password, otp);
+         String encodedPassword = passwordEncoder.encode(password);
+    	return customerService.changePassword(email,encodedPassword, otp);
 	}
 
     @PostMapping(value="/all")

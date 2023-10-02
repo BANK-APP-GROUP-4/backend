@@ -41,7 +41,7 @@ public class SecurityConfig {
     			.csrf(csrf->csrf.disable())
     			.cors().and()
     			.authorizeRequests()
-    			.antMatchers("/api/v1/customer/login", "/api/v1/customer/register").permitAll()
+    			.antMatchers("/api/v1/customer/login", "/api/v1/customer/register", "/api/v1/admin/*", "/api/v1/admin/*/*", "/api/v1/admin/*/*/*").permitAll()
     			.anyRequest().authenticated().and()
     			.exceptionHandling(ex -> ex.authenticationEntryPoint(point))
     			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

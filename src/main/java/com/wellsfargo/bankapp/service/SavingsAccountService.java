@@ -56,9 +56,9 @@ public class SavingsAccountService {
     
     public List<SavingsAccount> findSavingsAccountByCustId(Long cust_id) {
     	List<SavingsAccount> list = savingsAccountRepo.findByCustId(cust_id);
-    	for(SavingsAccount s1:list) {
-    		s1.setAccountStatus(true);
-    	}
+//    	for(SavingsAccount s1:list) {
+//    		s1.setAccountStatus(true);
+//    	}
         return savingsAccountRepo.findByCustId(cust_id);
     }
 
@@ -67,8 +67,8 @@ public class SavingsAccountService {
                 .orElseThrow(() -> new SavingsAccountNotFoundException("Savings account by id " + id + " was not found."));
     }
 
-    //@Scheduled(cron="0 0 2 * * ?")
-    @Scheduled(fixedDelay=1000)
+    @Scheduled(cron="0 0 2 * * ?")
+//    @Scheduled(fixedDelay=1000)
     public void MonthlyOperation() {
         List<SavingsAccount> accounts = savingsAccountRepo.findAll();
 

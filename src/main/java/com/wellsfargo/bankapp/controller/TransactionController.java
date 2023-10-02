@@ -66,7 +66,7 @@ public class TransactionController {
     }
 
     @PostMapping(value="/summary")
-    public ResponseEntity<List<Transaction>> getStatement(@RequestBody String req) throws JsonProcessingException {
+    public ResponseEntity<Map<String,Object>> getStatement(@RequestBody String req) throws JsonProcessingException {
         JsonNode reqNode = objectMapper.readTree(req);
 
         Long id = reqNode.get("id").asLong();
@@ -83,7 +83,11 @@ public class TransactionController {
         LocalDate to = LocalDate.parse(toDate.replaceAll("\"", ""));
 
         List<Transaction> list = transactionService.getStatement(id, from, to);
-        return ResponseEntity.status(HttpStatus.OK).body(list);
+        Map<String,Object> response=new HashMap<>();
+        response.put("message","successful");
+        response.put("status","success");
+        response.put("transaction", list);
+        return new ResponseEntity<>(response, HttpStatus.OK);
 
     }
 

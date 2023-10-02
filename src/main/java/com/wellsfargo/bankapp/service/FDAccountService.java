@@ -63,8 +63,8 @@ public class FDAccountService {
                 .collect(Collectors.toList());
     }
 
-    //@Scheduled(cron="0 0 2 * * ?")
-    @Scheduled(fixedDelay = 10)
+    @Scheduled(cron="0 0 2 * * ?")
+//    @Scheduled(fixedDelay = 10)
     public void MaturityOperation() {
         List<FDAccount> accounts = fdAccountRepo.findAll();
         for (FDAccount account : accounts) {

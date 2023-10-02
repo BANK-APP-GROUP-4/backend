@@ -1,6 +1,8 @@
 package com.wellsfargo.bankapp.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,6 +19,7 @@ import com.wellsfargo.bankapp.entity.Admin;
 import com.wellsfargo.bankapp.entity.Customer;
 import com.wellsfargo.bankapp.entity.Transaction;
 import com.wellsfargo.bankapp.entity.UpdateRequest;
+import com.wellsfargo.bankapp.entity.account.SavingsAccount;
 import com.wellsfargo.bankapp.service.AdminService;
 import com.wellsfargo.bankapp.service.CustomerService;
 
@@ -69,6 +72,16 @@ public class AdminController {
     	Long amount=updateRequest.getAmount();
     	String s=adminService.updateBalance(accNumber,amount);
     	return  ResponseEntity.ok(s);
+		
+	}
+    @GetMapping("/getAllAccounts")
+	public ResponseEntity<Map<String, Object>> getAccounts() 
+	{
+    	List<SavingsAccount> accounts=adminService.getAccounts();
+    	Map<String,Object> response=new HashMap<>();
+    	response.put("account_details", accounts);
+    	response.put("status", "success");
+        return new ResponseEntity<>(response, HttpStatus.OK);
 		
 	}
 	
