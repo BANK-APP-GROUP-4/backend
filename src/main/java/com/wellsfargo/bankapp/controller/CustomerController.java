@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -31,18 +32,21 @@ public class CustomerController {
     private ObjectMapper objectMapper = new ObjectMapper();
     private AuthenticationManager manager;
     private JwtHelper helper;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     public CustomerController(
             CustomerService customerService,
             SavingsAccountService savingsAccountService,
             AuthenticationManager manager,
-            JwtHelper helper
+            JwtHelper helper,
+            PasswordEncoder passwordEncoder
     ) {
         this.customerService = customerService;
         this.savingsAccountService = savingsAccountService;
         this.manager = manager;
         this.helper = helper;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @PostMapping("/register")
@@ -52,15 +56,17 @@ public class CustomerController {
         JsonNode customerNode = reqNode.get("customer_details");
         JsonNode savingsAccountNode = reqNode.get("account_details");
 
+        String encodedPassword = passwordEncoder.encode(customerNode.get("password").asText());
+
         Customer customer = new Customer(
-                customerNode.get("firstName").toString(),
-                customerNode.get("lastName").toString(),
-                customerNode.get("address").toString(),
-                customerNode.get("password").toString(),
-                customerNode.get("email").toString(),
+                customerNode.get("firstName").asText(),
+                customerNode.get("lastName").asText(),
+                customerNode.get("address").asText(),
+                customerNode.get("email").asText(),
+                encodedPassword,
                 customerNode.get("age").asInt(),
-                customerNode.get("gender").toString(),
-                customerNode.get("mobileNumber").toString(),
+                customerNode.get("gender").asText(),
+                customerNode.get("mobileNumber").asText(),
                 LocalDate.now()
         );
 
