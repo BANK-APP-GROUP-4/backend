@@ -7,6 +7,7 @@ import com.wellsfargo.bankapp.exception.CustomerNotFoundException;
 import com.wellsfargo.bankapp.mapper.CustomerDTOMapper;
 import com.wellsfargo.bankapp.repository.CustomerRepo;
 import com.wellsfargo.bankapp.repository.SavingsAccountRepo;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,8 @@ public class CustomerService {
         this.customerRepo = customerRepo;
         this.customerDTOMapper = customerDTOMapper;
     }
-
+ @Autowired 
+private PasswordEncoder passwordEncoder;
     	@Autowired SavingsAccountRepo savingsAccountRepo;
     public void registerCustomer(Customer customer){
         String email = customer.getEmail();
@@ -62,10 +64,14 @@ public class CustomerService {
     }
 
     public Boolean validateCustomer(String email, String password) {
-        Optional<Customer> customerByEmailOp = customerRepo.findCustomerByEmail(email);
+         Optional<Customer> customerByEmailOp = customerRepo.findCustomerByEmail(email);
         if(customerByEmailOp.isPresent()){
             Customer customerByEmail = customerByEmailOp.get();
-            if(customerByEmail.getPassword().equals(password)){
+            System.out.println(customerByEmail.getPassword());
+            System.out.println(password);
+            System.out.println(passwordEncoder.matches(password,customerByEmail.getPassword()));
+
+            if(passwordEncoder.matches(password,customerByEmail.getPassword())){
                 return true;
             }
         }
